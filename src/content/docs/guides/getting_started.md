@@ -11,7 +11,7 @@ With EinarCLI, get ready to enhance your programming efficiency and develop robu
 - <a href="https://go.dev/doc/install" target="_blank">Golang >= 1.21</a>
 
 ## 🔧 Installation
-Open your terminal and run the following command to install:
+Open your terminal and run the following command to install: 
 
     go install github.com/Ignaciojeria/einar@v1.40.0
 
