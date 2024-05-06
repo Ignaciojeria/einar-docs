@@ -1,5 +1,5 @@
 ---
-title: Example Reference
+title: Generate Inbound HTTP Handlers
 description: A reference page in my new Starlight docs site.
 ---
 

@@ -1,0 +1,65 @@
+---
+title: Getting Started
+description: A guide in my new Starlight docs site.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+EinarCLI is a command-line interface tool that makes application development easier. It automates complex tasks, generates standard code automatically, and integrates with various databases and APIs, allowing you to focus more on creating your application's business logic.
+## Minimum Requirements
+- <a href="https://go.dev/doc/install" target="_blank">Golang >= 1.21</a>
+
+## 🔧 Installation
+Open your terminal and run the following command to install: 
+```sh
+go install github.com/Ignaciojeria/einar@v1.40.0
+```
+
+## 👨‍💻 Create a New Project
+To start a new project, create an empty folder, open your terminal inside that folder, and run:
+```sh
+einar init my-first-einar-project
+```
+
+This will create a new project in your current directory with all the necessary files and configurations for your app.
+
+## 🌐 Check application status
+Inside your project directory, run the following command to start the server:
+```sh
+go run main.go
+```
+
+Once the server starts, execute the following GET Request to retrieve information about the health status of your service:
+
+<Tabs>
+  <TabItem label="CURL">
+```sh
+curl http://localhost:8080/health
+```
+  </TabItem>
+
+  <TabItem label="Windows PowerShell">
+```sh
+Invoke-WebRequest -Uri http://localhost:8080/health -Method GET
+```
+  </TabItem>
+</Tabs>
+
+ResponseBody:
+```sh
+{
+    "status": "OK",
+    "timestamp": "2024-05-06T01:44:26.4251148-04:00",
+    "system": {
+        "version": "go1.22.0",
+        "goroutines_count": 8,
+        "total_alloc_bytes": 1040464,
+        "heap_objects_count": 7102,
+        "alloc_bytes": 1040464
+    },
+    "component": {
+        "name": "my-first-einar-project",
+        "version": "1.0.0"
+    }
+}
+```
