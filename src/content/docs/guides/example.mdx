@@ -1,0 +1,126 @@
+---
+title: Generate Inbound HTTP Handlers
+description: A reference page in my new Starlight docs site.
+---
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+The einar-cli allows you to generate custom handlers with the necessary files and imports to handle your request. After generating the handler, you must manually replace the placeholder ```/insert-your-custom-pattern-here``` with the actual path you intend to use in your application.
+
+## 👨‍💻 Generate a New Custom Handler
+
+Inside your project directory, run the following command to create a new custom handler:
+<Tabs>
+  <TabItem label="GET">
+```sh
+einar generate get-controller get-customer
+```
+
+Here's an example of how the generated code might look:
+```sh
+func init() {
+	ioc.Registry(getCustomer, serverwrapper.NewEchoWrapper)
+}
+func getCustomer(e serverwrapper.EchoWrapper) {
+	e.GET("/insert-your-custom-pattern-here", func(c echo.Context) error {
+		return c.JSON(http.StatusOK, map[string]string{
+			"message": "Unimplemented",
+		})
+	})
+}
+```
+The file ```get_customer.go``` will be created in the following directory structure:
+```
+/app
+  /adapter
+    /in
+      /api
+        - get_customer.go  
+```
+  </TabItem>
+
+  <TabItem label="POST">
+```sh
+einar generate post-controller post-customer
+```
+
+Here's an example of how the generated code might look:
+```sh
+func init() {
+	ioc.Registry(postCustomer, serverwrapper.NewEchoWrapper)
+}
+func postCustomer(e serverwrapper.EchoWrapper) {
+	e.POST("/insert-your-custom-pattern-here", func(c echo.Context) error {
+		return c.JSON(http.StatusOK, map[string]string{
+			"message": "Unimplemented",
+		})
+	})
+}
+```
+The file ```post_customer.go``` will be created in the following directory structure:
+```
+/app
+  /adapter
+    /in
+      /api
+        - post_customer.go  
+```
+  </TabItem>
+
+
+  <TabItem label="PUT">
+```sh
+einar generate put-controller put-customer
+```
+
+Here's an example of how the generated code might look:
+```sh
+func init() {
+	ioc.Registry(putCustomer, serverwrapper.NewEchoWrapper)
+}
+func putCustomer(e serverwrapper.EchoWrapper) {
+	e.PUT("/insert-your-custom-pattern-here", func(c echo.Context) error {
+		return c.JSON(http.StatusOK, map[string]string{
+			"message": "Unimplemented",
+		})
+	})
+}
+```
+The file ```put_customer.go``` will be created in the following directory structure:
+```
+/app
+  /adapter
+    /in
+      /api
+        - put_customer.go  
+```
+  </TabItem>
+
+  <TabItem label="DELETE">
+```sh
+einar generate delete-controller delete-customer
+```
+
+Here's an example of how the generated code might look:
+```sh
+func init() {
+	ioc.Registry(deleteCustomer, serverwrapper.NewEchoWrapper)
+}
+func deleteCustomer(e serverwrapper.EchoWrapper) {
+	e.DELETE("/insert-your-custom-pattern-here", func(c echo.Context) error {
+		return c.JSON(http.StatusOK, map[string]string{
+			"message": "Unimplemented",
+		})
+	})
+}
+```
+The file ```delete_customer.go``` will be created in the following directory structure:
+```
+/app
+  /adapter
+    /in
+      /api
+        - delete_customer.go  
+```
+  </TabItem>
+
+</Tabs>
