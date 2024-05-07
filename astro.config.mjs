@@ -22,8 +22,20 @@ export default defineConfig({
 					],
 				},
 				{
-					label: 'Guides',
-					autogenerate: { directory: 'guides' },
+					label: 'Core',
+					autogenerate: { directory: 'core' },
+				},
+				{
+					label: 'Google Cloud',
+					autogenerate: { directory: 'google-cloud' },
+				},
+				{
+					label: 'Others',
+					autogenerate: { directory: 'others' },
+				},
+				{
+					label: 'IOC',
+					autogenerate: { directory: 'ioc' },
 				},
 			],
 		}),
