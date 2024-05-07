@@ -37,6 +37,10 @@ export default defineConfig({
 					label: 'IOC',
 					autogenerate: { directory: 'ioc' },
 				},
+				{
+					label: 'Tutorials',
+					autogenerate: { directory: 'tutorials' },
+				},
 			],
 		}),
 	],
