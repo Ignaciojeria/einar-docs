@@ -47,7 +47,7 @@ func postCustomer(
 	e serverwrapper.EchoWrapper,
 	createCustomer usecase.CreateCustomer) {
 	e.POST("/customer", func(c echo.Context) error {
-		result, _ := createCustomer(c.Request().Context(), "dependency injection works")
+		result, _ := createCustomer(c.Request().Context(), "createCustomer dependency injection works")
 		return c.JSON(http.StatusOK, result)
 	})
 }
@@ -73,5 +73,5 @@ Invoke-WebRequest -Uri http://localhost:8080/customer -Method POST
 
 ResponseBody:
 ```
-dependency injection works
+createCustomer dependency injection works
 ```
