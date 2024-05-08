@@ -4,39 +4,12 @@ description: A reference page in my new Starlight docs site.
 ---
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-The einar-cli allows you to generate custom handlers with the necessary files and imports to handle your request. After generating the handler, you must manually replace the placeholder ```/insert-your-custom-pattern-here``` with the actual path you intend to use in your application.
+The einar-cli allows you to generate custom handlers with the necessary files and imports to handle your request. After generating the handler, you must manually replace the placeholder `/insert-your-custom-pattern-here` with the actual path you intend to use in your application.
 
 ## 👨‍💻 Generate a New Custom Handler
 
 Inside your project directory, run the following command to create a new custom handler:
 <Tabs>
-  <TabItem label="GET">
-```sh
-einar generate get-controller get-customer
-```
-
-Here's an example of how the generated code might look:
-```sh
-func init() {
-	ioc.Registry(getCustomer, serverwrapper.NewEchoWrapper)
-}
-func getCustomer(e serverwrapper.EchoWrapper) {
-	e.GET("/insert-your-custom-pattern-here", func(c echo.Context) error {
-		return c.JSON(http.StatusOK, map[string]string{
-			"message": "Unimplemented",
-		})
-	})
-}
-```
-The file ```get_customer.go``` will be created in the following directory structure:
-```
-/app
-  /adapter
-    /in
-      /api
-        - get_customer.go  
-```
-  </TabItem>
 
   <TabItem label="POST">
 ```sh
@@ -56,7 +29,7 @@ func postCustomer(e serverwrapper.EchoWrapper) {
 	})
 }
 ```
-The file ```post_customer.go``` will be created in the following directory structure:
+The file `post_customer.go` will be created in the following directory structure:
 ```
 /app
   /adapter
@@ -64,8 +37,80 @@ The file ```post_customer.go``` will be created in the following directory struc
       /api
         - post_customer.go  
 ```
+
+## 🌐 Check The Handler Response
+Execute the following command to retrieve the default response of your generated handler:
+
+<Tabs>
+  <TabItem label="CURL">
+```sh
+curl -X POST http://localhost:8080/insert-your-custom-pattern-here
+```
   </TabItem>
 
+  <TabItem label="Windows PowerShell">
+```sh
+Invoke-WebRequest -Uri http://localhost:8080/insert-your-custom-pattern-here -Method POST
+```
+  </TabItem>
+</Tabs>
+
+ResponseBody:
+```sh
+{
+    "message": "Unimplemented"
+}
+```
+  </TabItem>
+
+  <TabItem label="GET">
+```sh
+einar generate get-controller get-customer
+```
+
+Here's an example of how the generated code might look:
+```sh
+func init() {
+	ioc.Registry(getCustomer, serverwrapper.NewEchoWrapper)
+}
+func getCustomer(e serverwrapper.EchoWrapper) {
+	e.GET("/insert-your-custom-pattern-here", func(c echo.Context) error {
+		return c.JSON(http.StatusOK, map[string]string{
+			"message": "Unimplemented",
+		})
+	})
+}
+```
+The file `get_customer.go` will be created in the following directory structure:
+```
+/app
+  /adapter
+    /in
+      /api
+        - get_customer.go  
+```
+## 🌐 Check The Handler Response
+Execute the following command to retrieve the default response:
+<Tabs>
+  <TabItem label="CURL">
+```sh
+curl -X GET http://localhost:8080/insert-your-custom-pattern-here
+```
+  </TabItem>
+
+  <TabItem label="Windows PowerShell">
+```sh
+Invoke-WebRequest -Uri http://localhost:8080/insert-your-custom-pattern-here -Method GET
+```
+  </TabItem>
+</Tabs>
+ResponseBody:
+```sh
+{
+    "message": "Unimplemented"
+}
+```
+  </TabItem>
 
   <TabItem label="PUT">
 ```sh
@@ -85,13 +130,34 @@ func putCustomer(e serverwrapper.EchoWrapper) {
 	})
 }
 ```
-The file ```put_customer.go``` will be created in the following directory structure:
+The file `put_customer.go` will be created in the following directory structure:
 ```
 /app
   /adapter
     /in
       /api
         - put_customer.go  
+```
+## 🌐 Check The Handler Response
+Execute the following commands to retrieve the default response:
+<Tabs>
+  <TabItem label="CURL">
+```sh
+curl -X PUT http://localhost:8080/insert-your-custom-pattern-here
+```
+  </TabItem>
+
+  <TabItem label="Windows PowerShell">
+```sh
+Invoke-WebRequest -Uri http://localhost:8080/insert-your-custom-pattern-here -Method PUT
+```
+  </TabItem>
+</Tabs>
+ResponseBody:
+```sh
+{
+    "message": "Unimplemented"
+}
 ```
   </TabItem>
 
@@ -113,13 +179,83 @@ func deleteCustomer(e serverwrapper.EchoWrapper) {
 	})
 }
 ```
-The file ```delete_customer.go``` will be created in the following directory structure:
+The file `delete_customer.go` will be created in the following directory structure:
 ```
 /app
   /adapter
     /in
       /api
         - delete_customer.go  
+```
+## 🌐 Check The Handler Response
+Execute the following commands to retrieve the default response:
+<Tabs>
+  <TabItem label="CURL">
+```sh
+curl -X DELETE http://localhost:8080/insert-your-custom-pattern-here
+```
+  </TabItem>
+
+  <TabItem label="Windows PowerShell">
+```sh
+Invoke-WebRequest -Uri http://localhost:8080/insert-your-custom-pattern-here -Method DELETE
+```
+  </TabItem>
+</Tabs>
+ResponseBody:
+```sh
+{
+    "message": "Unimplemented"
+}
+```
+  </TabItem>
+
+  <TabItem label="PATCH">
+```sh
+einar generate patch-controller patch-customer
+```
+
+Here's an example of how the generated code might look:
+```sh
+func init() {
+	ioc.Registry(patchCustomer, serverwrapper.NewEchoWrapper)
+}
+func patchCustomer(e serverwrapper.EchoWrapper) {
+	e.PATCH("/insert-your-custom-pattern-here", func(c echo.Context) error {
+		return c.JSON(http.StatusOK, map[string]string{
+			"message": "Unimplemented",
+		})
+	})
+}
+```
+The file `patch_customer.go` will be created in the following directory structure:
+```
+/app
+  /adapter
+    /in
+      /api
+        - patch_customer.go  
+```
+## 🌐 Check The Handler Response
+Execute the following commands to retrieve the default response:
+<Tabs>
+  <TabItem label="CURL">
+```sh
+curl -X PATCH http://localhost:8080/insert-your-custom-pattern-here
+```
+  </TabItem>
+
+  <TabItem label="Windows PowerShell">
+```sh
+Invoke-WebRequest -Uri http://localhost:8080/insert-your-custom-pattern-here -Method PATCH
+```
+  </TabItem>
+</Tabs>
+ResponseBody:
+```sh
+{
+    "message": "Unimplemented"
+}
 ```
   </TabItem>
 
