@@ -1,0 +1,77 @@
+---
+title: UseCase & Dependency Injection
+description: A reference page in my new Starlight docs site.
+---
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+The einar-cli enables you to generate custom business use cases by automatically generating the necessary files and imports for managing your business logic. It utilizes OpenTelemetry to ensure complete observability, propagating context.Context as the first argument to unify traces, metrics, and logs. Additionally, einar includes a built-in dependency injection mechanism to facilitate the integration of various components.
+
+## 👨‍💻 Generate a New Custom UseCase
+Inside your project directory, run the following command to create a new custom usecase:
+```sh
+einar generate usecase create-customer
+```
+
+Here's an example of how the generated code might look:
+```sh
+type CreateCustomer func(ctx context.Context, domain interface{}) (interface{}, error)
+
+func init() {
+	ioc.Registry(NewCreateCustomer)
+}
+func NewCreateCustomer() CreateCustomer {
+	return func(ctx context.Context, input interface{}) (interface{}, error) {
+		_, span := observability.Tracer.Start(ctx, "CreateCustomer")
+		defer span.End()
+		return input, nil
+	}
+}
+```
+
+The file ```create_customer.go``` will be created in the following directory structure:
+```
+/app
+  /usecase
+    - create_customer.go
+```
+
+## 🪡 Dependency Injection with Einar IOC
+Here is how to integrate the `usecase.CreateCustomer` type as a constructor argument and register its associated dependency with `ioc.Registry`:
+```sh
+func init() {
+	ioc.Registry(postCustomer,
+		serverwrapper.NewEchoWrapper,
+		usecase.NewCreateCustomer)
+}
+func postCustomer(
+	e serverwrapper.EchoWrapper,
+	createCustomer usecase.CreateCustomer) {
+	e.POST("/customer", func(c echo.Context) error {
+		result, _ := createCustomer(c.Request().Context(), "dependency injection works")
+		return c.JSON(http.StatusOK, result)
+	})
+}
+```
+## 🌐 Check The Handler Response
+Execute the following POST Request to retrieve createCustomer result from your handler:
+
+<Tabs>
+  <TabItem label="CURL">
+
+```sh
+curl -X POST http://localhost:8080/customer
+```
+  </TabItem>
+
+  <TabItem label="Windows PowerShell">
+  
+```sh
+Invoke-WebRequest -Uri http://localhost:8080/customer -Method POST
+```
+  </TabItem>
+</Tabs>
+
+ResponseBody:
+```
+dependency injection works
+```
