@@ -80,3 +80,40 @@ func NewSaveCustomer(c *firestorewrapper.ClientWrapper) SaveCustomer {
 	}
 }
 ```
+
+### 📄🔍 Read individual document
+Use DocumentRef.Get to read a document. The result is a DocumentSnapshot. Call its Data method to obtain the entire document contents as a map. You can also obtain a single field with DataAt, or extract the data into a struct with DataTo. With the type definition :
+
+```sh
+type FindCustomerById func(ctx context.Context, input Customer) (Customer, error)
+
+func init() {
+	ioc.Registry(
+		NewFindCustomerById,
+		firestorewrapper.NewClientWrapper)
+}
+func NewFindCustomerById(c *firestorewrapper.ClientWrapper) FindCustomerById {
+	customers := c.Client().Collection("customers")
+	return func(ctx context.Context, input Customer) (Customer, error) {
+		_, span := observability.Tracer.Start(ctx,
+			"FindCustomerById",
+			trace.WithSpanKind(trace.SpanKindInternal))
+		defer span.End()
+
+		var ref *firestore.DocumentRef = customers.Doc(input.ID)
+		docsnap, err := ref.Get(ctx)
+		if err != nil {
+			span.RecordError(err)
+			return Customer{}, err
+		}
+
+		var foundDocument Customer
+		if err := docsnap.DataTo(&foundDocument); err != nil {
+			span.RecordError(err)
+			return Customer{}, err
+		}
+		return foundDocument, nil
+	}
+}
+```
+📚🔍 [Explore More Usage Examples in Official Documentation.](https://pkg.go.dev/cloud.google.com/go/firestore)
