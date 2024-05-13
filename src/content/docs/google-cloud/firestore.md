@@ -16,8 +16,8 @@ This will generate the following files and directories within your project, sett
     /infrastructure
       /firebaseapp
         - firebase_app.go
-        /firestorewrapper
-          - client_wrapper.go
+        /firestoreclient
+          - client.go
 ```
 
 ## 👨‍💻 Generate a New Custom Repository
@@ -32,9 +32,9 @@ type SaveCustomer func(ctx context.Context, input interface{}) error
 func init() {
 	ioc.Registry(
 		NewSaveCustomer,
-		firestorewrapper.NewClientWrapper)
+		firestoreclient.NewClient)
 }
-func NewSaveCustomer(c *firestorewrapper.ClientWrapper) SaveCustomer {
+func NewSaveCustomer(c *firestore.Client) SaveCustomer {
 	return func(ctx context.Context, input interface{}) error {
 		_, span := observability.Tracer.Start(ctx,
 			"SaveCustomer",
@@ -44,7 +44,14 @@ func NewSaveCustomer(c *firestorewrapper.ClientWrapper) SaveCustomer {
 	}
 }
 ```
-`c *firestorewrapper.ClientWrapper` is a wrapper for the [official Firestore package](https://pkg.go.dev/cloud.google.com/go/firestore).
+The file `save_customer.go` will be created in the following directory structure:
+```
+/app
+  /adapter
+    /out
+      /firestore_repository
+        - save_customer.go  
+```
 
 ### ✍️ Writing individual documents
 For writing individual documents, use the methods provided on `*firestore.DocumentRef`. The `SaveCustomer` function, for example, creates a new document within the `customers` collection based on provided input.
@@ -61,10 +68,10 @@ type SaveCustomer func(ctx context.Context, input Customer) error
 func init() {
 	ioc.Registry(
 		NewSaveCustomer,
-		firestorewrapper.NewClientWrapper)
+		firestoreclient.NewClient)
 }
-func NewSaveCustomer(c *firestorewrapper.ClientWrapper) SaveCustomer {
-	customers := c.Client().Collection("customers")
+func NewSaveCustomer(c *firestore.Client) SaveCustomer {
+	customers := c.Collection("customers")
 	return func(ctx context.Context, input Customer) error {
 		_, span := observability.Tracer.Start(ctx,
 			"SaveCustomer",
@@ -90,10 +97,10 @@ type FindCustomerById func(ctx context.Context, input Customer) (Customer, error
 func init() {
 	ioc.Registry(
 		NewFindCustomerById,
-		firestorewrapper.NewClientWrapper)
+		firestoreclient.NewClient)
 }
-func NewFindCustomerById(c *firestorewrapper.ClientWrapper) FindCustomerById {
-	customers := c.Client().Collection("customers")
+func NewFindCustomerById(c *firestore.Client) FindCustomerById {
+	customers := c.Collection("customers")
 	return func(ctx context.Context, input Customer) (Customer, error) {
 		_, span := observability.Tracer.Start(ctx,
 			"FindCustomerById",
