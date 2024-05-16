@@ -21,3 +21,137 @@ This will generate the following files and directories within your project, sett
           - message_processor.go
           - subscription_manager.go
 ```
+
+## 👨‍💻 Generate a New Custom Publisher
+Inside your project directory, run the following command to create a new custom publisher:
+```sh
+einar generate publisher publish-customer
+```
+Here’s an example of how the generated code might look:
+```sh
+type PublishCustomer func(ctx context.Context, input interface{}) error
+
+func init() {
+	ioc.Registry(
+		NewPublishCustomer,
+		pubsubclient.NewClient,
+		logger.NewLogger)
+}
+func NewPublishCustomer(c *pubsub.Client, l logger.Logger) PublishCustomer {
+	topicName := "INSERT_YOUR_TOPIC_NAME_HERE"
+	topic := c.Topic(topicName)
+	return func(ctx context.Context, input interface{}) error {
+		_, span := observability.Tracer.Start(ctx, "PublishCustomer",
+			trace.WithSpanKind(trace.SpanKindProducer),
+			trace.WithAttributes(attribute.String(constants.TopicName, topicName)),
+		)
+		defer span.End()
+
+		bytes, err := json.Marshal(input)
+		if err != nil {
+			return err
+		}
+
+		message := &pubsub.Message{
+			Attributes: map[string]string{
+				"customAttribute1": "attr1",
+				"customAttribute2": "attr2",
+			},
+			Data: bytes,
+		}
+
+		result := topic.Publish(ctx, message)
+		// Get the server-generated message ID.
+		messageID, err := result.Get(ctx)
+
+		if err != nil {
+			span.SetStatus(codes.Error, exception.PUBSUB_BROKER_ERROR.Error())
+			span.RecordError(err)
+			l.LogSpanError(span, exception.PUBSUB_BROKER_ERROR.Error(),
+				logger.CustomLogFields{
+					constants.Error: err.Error(),
+				})
+			return exception.PUBSUB_BROKER_ERROR
+		}
+
+		span.SetStatus(codes.Ok, "Message published with ID: "+messageID)
+
+		return nil
+	}
+}
+```
+
+The file publish_customer.go will be created in the following directory structure:
+```
+/app
+  /adapter
+    /out
+      /publisher
+        - publish_customer.go  
+```
+## 👨‍💻 Generate a New Custom Subscription
+Inside your project directory, run the following command to create a new custom subscription:
+```sh
+einar generate subscription process-customer
+```
+Here’s an example of how the generated code might look:
+```sh
+func init() {
+	ioc.Registry(
+		newProcessCustomer,
+		subscriptionwrapper.NewSubscriptionManager,
+		subscriptionwrapper.NewHandleMessageAcknowledgement)
+}
+func newProcessCustomer(
+	sm subscriptionwrapper.SubscriptionManager,
+	handleMessageAck subscriptionwrapper.HandleMessageAcknowledgement,
+) subscriptionwrapper.MessageProcessor {
+	subscriptionName := "INSERT_YOUR_SUBSCRIPTION_NAME_HERE"
+	subscriptionRef := sm.Subscription(subscriptionName)
+	subscriptionRef.ReceiveSettings.MaxOutstandingMessages = 5
+	messageProcessor := func(ctx context.Context, m *pubsub.Message) (statusCode int, err error) {
+		_, span := observability.Tracer.Start(ctx,
+			"messageProcessorStruct",
+			trace.WithSpanKind(trace.SpanKindConsumer), trace.WithAttributes(
+				attribute.String("subscription.name", subscriptionRef.String()),
+				attribute.String("message.id", m.ID),
+				attribute.String("message.publishTime", m.PublishTime.String()),
+			))
+		var input interface{}
+		defer func() {
+			statusCode = handleMessageAck(span,
+				&subscriptionwrapper.HandleMessageAcknowledgementDetails{
+					SubscriptionName: subscriptionRef.String(),
+					Error:            err,
+					Message:          m,
+					ErrorsRequiringNack: []error{
+						exception.INTERNAL_SERVER_ERROR,
+						exception.EXTERNAL_SERVER_ERROR,
+						exception.HTTP_NETWORK_ERROR,
+						exception.PUBSUB_BROKER_ERROR,
+					},
+					CustomLogFields: logger.CustomLogFields{
+						"customIndexField": "MyCustomFieldForIndexWhenSearchLogs",
+					},
+				})
+			span.End()
+		}()
+		if err := json.Unmarshal(m.Data, &input); err != nil {
+			return statusCode, err
+		}
+		return statusCode, nil
+	}
+	go sm.WithMessageProcessor(messageProcessor).
+		WithPushHandler("/subscription/" + subscriptionName).
+		Start(subscriptionRef)
+	return messageProcessor
+}
+```
+The file process_customer.go will be created in the following directory structure:
+```
+/app
+  /adapter
+    /in
+      /subscription
+        - process_customer.go  
+```
