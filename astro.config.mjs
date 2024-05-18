@@ -30,12 +30,12 @@ export default defineConfig({
 					autogenerate: { directory: 'google-cloud' },
 				},
 				{
-					label: 'Others',
-					autogenerate: { directory: 'others' },
+					label: 'Synadia Cloud',
+					autogenerate: { directory: 'synadia-cloud' },
 				},
 				{
-					label: 'IOC',
-					autogenerate: { directory: 'ioc' },
+					label: 'Others',
+					autogenerate: { directory: 'others' },
 				},
 				{
 					label: 'Tutorials',
