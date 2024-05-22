@@ -30,8 +30,17 @@ export default defineConfig({
 					autogenerate: { directory: 'google-cloud' },
 				},
 				{
+					label: 'StorJ',
+					autogenerate: { directory: 'storj' },
+				},
+				/*
+				{
 					label: 'Synadia Cloud',
 					autogenerate: { directory: 'synadia-cloud' },
+				},
+				{
+					label: 'Fermyon Cloud',
+					autogenerate: { directory: 'fermyon-cloud' },
 				},
 				{
 					label: 'Others',
@@ -45,6 +54,7 @@ export default defineConfig({
 					label: 'Resources',
 					autogenerate: { directory: 'resources' },
 				},
+				*/
 			],
 		}),
 	],
