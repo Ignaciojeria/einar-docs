@@ -33,6 +33,10 @@ export default defineConfig({
 					label: 'StorJ',
 					autogenerate: { directory: 'storj' },
 				},
+				{
+					label: 'Others',
+					autogenerate: { directory: 'others' },
+				}
 				/*
 				{
 					label: 'Synadia Cloud',
@@ -41,10 +45,6 @@ export default defineConfig({
 				{
 					label: 'Fermyon Cloud',
 					autogenerate: { directory: 'fermyon-cloud' },
-				},
-				{
-					label: 'Others',
-					autogenerate: { directory: 'others' },
 				},
 				{
 					label: 'Tutorials',
