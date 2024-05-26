@@ -1,0 +1,64 @@
+---
+title: Empezando
+description: A guide in my new Starlight docs site.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+EinarCLI es una herramienta de línea de comandos que facilita el desarrollo de aplicaciones. Automatiza tareas complejas, genera código estándar automáticamente e integra diversas bases de datos y APIs, permitiéndote centrar tus esfuerzos en crear la lógica de negocio de tu aplicación.
+## Requisitos mínimos
+- <a href="https://go.dev/doc/install" target="_blank">Golang >= 1.21</a>
+
+## 🔧 Instalación
+Abre tu terminal y ejecuta el siguiente comando para instalar: 
+```sh
+go install github.com/Ignaciojeria/einar@v1.40.0
+```
+
+## 👨‍💻 Crear un nuevo proyecto
+Para iniciar un nuevo proyecto, crea una carpeta vacía, abre tu terminal dentro de esa carpeta y ejecuta:
+```sh
+einar init my-first-einar-project
+```
+
+Esto creará un nuevo proyecto en tu directorio actual con todos los archivos y configuraciones necesarios para tu aplicación.
+
+## 🌐 Verificar estado de la aplicación
+Dentro del directorio de tu proyecto, ejecuta el siguiente comando para iniciar el servidor:
+```sh
+go run main.go
+```
+
+Una vez que el servidor se inicie, ejecuta la siguiente solicitud GET para obtener información sobre el estado de salud de tu servicio:
+<Tabs>
+  <TabItem label="CURL">
+```sh
+curl http://localhost:8080/health
+```
+  </TabItem>
+
+  <TabItem label="Windows PowerShell">
+```sh
+Invoke-WebRequest -Uri http://localhost:8080/health -Method GET
+```
+  </TabItem>
+</Tabs>
+
+Cuerpo de la respuesta:
+```sh
+{
+    "status": "OK",
+    "timestamp": "2024-05-06T01:44:26.4251148-04:00",
+    "system": {
+        "version": "go1.22.0",
+        "goroutines_count": 8,
+        "total_alloc_bytes": 1040464,
+        "heap_objects_count": 7102,
+        "alloc_bytes": 1040464
+    },
+    "component": {
+        "name": "my-first-einar-project",
+        "version": "1.0.0"
+    }
+}
+```

@@ -22,7 +22,7 @@ Inside your project directory, run the following command to create a new custom 
 ```sh
 einar generate postgresql-repository save-customer
 ```
-Here's an example of how the generated code might look:
+Here's an example of how the generated code will look:
 ```sh
 type SaveCustomer func(ctx context.Context, input interface{}) error
 

@@ -1,15 +1,15 @@
 ---
-title: Publish & Subscribe
+title: Publicar y Suscribir
 description: A reference page in my new Starlight docs site.
 ---
-EinarCLI allows you to install Google PubSub dependencies, directly include them in your code, generate publishers & subscriptors for PubSub operations.
+EinarCLI facilita la instalación de dependencias de Google PubSub, permite su inclusión directa en tu código y genera publicadores y suscriptores para operaciones de PubSub
 
-## 📡 PubSub installation
-Inside your project directory, run the following command to include PubSub in your project:
+## 📡 Instalación de PubSub
+Dentro del directorio de tu proyecto, ejecuta el siguiente comando para incluir PubSub en tu proyecto:
 ```sh
 einar install pubsub
 ```
-This will generate the following files and directories within your project, setting up the necessary infrastructure for PubSub interaction:
+Esto generará los siguientes archivos y directorios dentro de tu proyecto, configurando la infraestructura necesaria para la interacción con PubSub:
 ```sh 
 /app
   /shared
@@ -22,12 +22,12 @@ This will generate the following files and directories within your project, sett
           - subscription_manager.go
 ```
 
-## 👨‍💻 Generate a New Custom Publisher
-Inside your project directory, run the following command to create a new custom publisher:
+## 👨‍💻 Generar un Nuevo Publicador
+Dentro del directorio de tu proyecto, ejecuta el siguiente comando para crear un nuevo publicador:
 ```sh
 einar generate publisher publish-customer
 ```
-Here’s an example of how the generated code will look:
+Aquí tienes un ejemplo de cómo se verá el código generado:
 ```sh
 type PublishCustomer func(ctx context.Context, input interface{}) error
 
@@ -81,7 +81,7 @@ func NewPublishCustomer(c *pubsub.Client, l logger.Logger) PublishCustomer {
 }
 ```
 
-The file publish_customer.go will be created in the following directory structure:
+El archivo `publish_customer.go` se creará en la siguiente estructura de directorios:
 ```
 /app
   /adapter
@@ -89,12 +89,12 @@ The file publish_customer.go will be created in the following directory structur
       /publisher
         - publish_customer.go  
 ```
-## 👨‍💻 Generate a New Custom Subscription
-Inside your project directory, run the following command to create a new custom subscription:
+## 👨‍💻 Generar una Nueva Suscripción
+Dentro del directorio de tu proyecto, ejecuta el siguiente comando para crear una nueva suscripción:
 ```sh
 einar generate subscription process-customer
 ```
-Here’s an example of how the generated code might look:
+Aquí tienes un ejemplo de cómo se verá el código generado:
 ```sh
 func init() {
 	ioc.Registry(
@@ -147,7 +147,7 @@ func newProcessCustomer(
 	return messageProcessor
 }
 ```
-The file process_customer.go will be created in the following directory structure:
+El archivo `process_customer.go` se creará en la siguiente estructura de directorios:
 ```
 /app
   /adapter

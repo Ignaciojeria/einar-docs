@@ -1,18 +1,18 @@
 ---
-title: UseCase & Dependency Injection
+title: CasosDeUso e Inyección de dependencias
 description: A reference page in my new Starlight docs site.
 ---
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-The einar-cli enables you to generate custom business use cases by automatically generating the necessary files and imports for managing your business logic. It utilizes OpenTelemetry to ensure complete observability, propagating context.Context as the first argument to unify traces, metrics, and logs. Additionally, einar includes a built-in dependency injection mechanism to facilitate the integration of various components.
+EinarCLI te permite generar casos de uso empresariales personalizados generando automáticamente los archivos e importaciones necesarios para gestionar tu lógica de negocio. Utiliza OpenTelemetry para asegurar una observabilidad completa, propagando context.Context como el primer argumento para unificar trazas, métricas y logs. Además, einar incluye un mecanismo de inyección de dependencias incorporado para facilitar la integración de varios componentes.
 
-## 👨‍💻 Generate a New UseCase
-Inside your project directory, run the following command to create a new custom usecase:
+## 👨‍💻 Generar un Nuevo Caso de Uso
+Dentro de tu directorio de proyecto, ejecuta el siguiente comando para crear un nuevo caso de uso personalizado:
 ```sh
 einar generate usecase create-customer
 ```
 
-Here's an example of how the generated code will look:
+Aquí tienes un ejemplo de cómo se verá el código generado:
 ```sh
 type CreateCustomer func(ctx context.Context, domain interface{}) (interface{}, error)
 
@@ -28,15 +28,15 @@ func NewCreateCustomer() CreateCustomer {
 }
 ```
 
-The file ```create_customer.go``` will be created in the following directory structure:
+El archivo `create_customer.go` se creará en la siguiente estructura de directorios:
 ```
 /app
   /usecase
     - create_customer.go
 ```
 
-## 🪡 Dependency Injection with Einar IOC
-Here is how to integrate the `usecase.CreateCustomer` type as a constructor argument and register its associated dependency with `ioc.Registry`:
+## 🪡 Inyección de Dependencias con Einar IOC
+Aquí tienes cómo integrar el tipo `usecase.CreateCustomer` como un argumento del constructor y registrar su dependencia asociada con `ioc.Registry`:
 ```sh
 func init() {
 	ioc.Registry(postCustomer,
@@ -52,8 +52,8 @@ func postCustomer(
 	})
 }
 ```
-## 🌐 Check The Controller Response
-Execute the following POST Request to retrieve `createCustomer` result from your controller:
+## 🌐 Verifica la Respuesta del Controlador
+Ejecuta la siguiente solicitud POST para obtener el resultado de `createCustomer` desde tu controlador:
 
 <Tabs>
   <TabItem label="CURL">

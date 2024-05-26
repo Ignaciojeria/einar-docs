@@ -1,6 +1,11 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 
+export const locales = {
+	root: { label: 'English', lang: 'en' },
+	es: { label: 'Español', lang: 'es' }
+};
+
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://ignaciojeria.github.io',
@@ -13,12 +18,22 @@ export default defineConfig({
 			social: {
 				github: 'https://github.com/ignaciojeria/einar',
 			},
+			locales,
 			sidebar: [
 				{
 					label: 'Start Here',
+					translations: {
+						es: 'Comienza Aquí',
+					},
 					items: [
 						// Each item here is one entry in the navigation menu.
-						{ label: 'Getting Started', link: '/getting-started/' },
+						{
+						label: 'Getting Started', 
+						link: '/getting-started/' ,
+						translations: {
+							es: 'Empezando',
+						}
+						},	
 					],
 				},
 				{

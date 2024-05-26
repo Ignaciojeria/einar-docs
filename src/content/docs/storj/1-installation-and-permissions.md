@@ -32,7 +32,7 @@ Inside your project directory, run the following command to create a new custom 
 ```sh 
 einar generate uplink-bucket customer-contract-bucket
 ```
-Here's an example of how the generated code might look:
+Here's an example of how the generated code will look:
 
 ```sh 
 type CustomerContractBucket struct {

@@ -1,14 +1,14 @@
 ---
-title: HTTP Controller
+title: Controlador HTTP
 description: A reference page in my new Starlight docs site.
 ---
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-EinarCLI allows you to generate custom controllers with the necessary files and imports to handle your http requests.
+EinarCLI te permite generar controladores personalizados con los archivos e importaciones necesarios para manejar tus solicitudes HTTP.
 
-## 👨‍💻 Generate a New Controller
+## 👨‍💻 Generar un nuevo Controlador
 
-Inside your project directory, run the following command to create a new controller:
+Dentro de tu directorio de proyecto, ejecuta el siguiente comando para crear un nuevo controlador personalizado:
 <Tabs>
 
   <TabItem label="POST">
@@ -16,7 +16,7 @@ Inside your project directory, run the following command to create a new control
 einar generate post-controller post-customer
 ```
 
-Here's an example of how the generated code will look:
+Aquí tienes un ejemplo de cómo se verá el código generado:
 ```sh
 func init() {
 	ioc.Registry(postCustomer, serverwrapper.NewEchoWrapper)
@@ -29,7 +29,7 @@ func postCustomer(e serverwrapper.EchoWrapper) {
 	})
 }
 ```
-`e serverwrapper.EchoWrapper` is a wrapper for the [official echo package](https://echo.labstack.com/). After generating the controller, you must manually replace the placeholder `/insert-your-custom-pattern-here` with the actual path you intend to use in your application. The file `post_customer.go` will be created in the following directory structure:
+`serverwrapper.EchoWrapper` es un envoltorio para el [paquete oficial Echo](https://echo.labstack.com/). Después de generar el controlador, debes reemplazar manualmente `/insert-your-custom-pattern-here` con la ruta real que deseas usar en tu aplicación. El archivo `post_customer.go` se creará en la siguiente estructura de directorios:
 ```
 /app
   /adapter
@@ -38,8 +38,8 @@ func postCustomer(e serverwrapper.EchoWrapper) {
         - post_customer.go  
 ```
 
-## 🌐 Check The Controller Response
-Execute the following request to retrieve the default response of your generated controller:
+## 🌐 Verifica la Respuesta del Controlador
+Ejecuta la siguiente solicitud para obtener la respuesta predeterminada de tu controlador generado:
 
 <Tabs>
   <TabItem label="CURL">
@@ -55,7 +55,7 @@ Invoke-WebRequest -Uri http://localhost:8080/insert-your-custom-pattern-here -Me
   </TabItem>
 </Tabs>
 
-ResponseBody:
+Cuerpo de la respuesta:
 ```sh
 {
     "message": "Unimplemented"
@@ -68,7 +68,7 @@ ResponseBody:
 einar generate get-controller get-customer
 ```
 
-Here's an example of how the generated code will look:
+Aquí tienes un ejemplo de cómo se verá el código generado:
 ```sh
 func init() {
 	ioc.Registry(getCustomer, serverwrapper.NewEchoWrapper)
@@ -81,7 +81,7 @@ func getCustomer(e serverwrapper.EchoWrapper) {
 	})
 }
 ```
-`e serverwrapper.EchoWrapper` is a wrapper for the [official echo package](https://echo.labstack.com/). After generating the controller, you must manually replace the placeholder `/insert-your-custom-pattern-here` with the actual path you intend to use in your application.  The file `get_customer.go` will be created in the following directory structure:
+`serverwrapper.EchoWrapper` es un envoltorio para el [paquete oficial Echo](https://echo.labstack.com/). Después de generar el controlador, debes reemplazar manualmente `/insert-your-custom-pattern-here` con la ruta real que deseas usar en tu aplicación. El archivo `get_customer.go` se creará en la siguiente estructura de directorios:
 ```
 /app
   /adapter
@@ -89,8 +89,8 @@ func getCustomer(e serverwrapper.EchoWrapper) {
       /api
         - get_customer.go  
 ```
-## 🌐 Check The Controller Response
-Execute the following request to retrieve the default response:
+## 🌐 Verifica la Respuesta del Controlador
+Ejecuta la siguiente solicitud para obtener la respuesta predeterminada de tu controlador generado:
 <Tabs>
   <TabItem label="CURL">
 ```sh
@@ -104,7 +104,7 @@ Invoke-WebRequest -Uri http://localhost:8080/insert-your-custom-pattern-here -Me
 ```
   </TabItem>
 </Tabs>
-ResponseBody:
+Cuerpo de la respuesta:
 ```sh
 {
     "message": "Unimplemented"
@@ -117,7 +117,7 @@ ResponseBody:
 einar generate put-controller put-customer
 ```
 
-Here's an example of how the generated code will look:
+Aquí tienes un ejemplo de cómo se verá el código generado:
 ```sh
 func init() {
 	ioc.Registry(putCustomer, serverwrapper.NewEchoWrapper)
@@ -130,7 +130,7 @@ func putCustomer(e serverwrapper.EchoWrapper) {
 	})
 }
 ```
-`e serverwrapper.EchoWrapper` is a wrapper for the [official echo package](https://echo.labstack.com/). After generating the controller, you must manually replace the placeholder `/insert-your-custom-pattern-here` with the actual path you intend to use in your application.  The file `put_customer.go` will be created in the following directory structure:
+`serverwrapper.EchoWrapper` es un envoltorio para el [paquete oficial Echo](https://echo.labstack.com/). Después de generar el controlador, debes reemplazar manualmente `/insert-your-custom-pattern-here` con la ruta real que deseas usar en tu aplicación. El archivo `put_customer.go` se creará en la siguiente estructura de directorios:
 ```
 /app
   /adapter
@@ -138,8 +138,8 @@ func putCustomer(e serverwrapper.EchoWrapper) {
       /api
         - put_customer.go  
 ```
-## 🌐 Check The Controller Response
-Execute the following requests to retrieve the default response:
+## 🌐 Verifica la Respuesta del Controlador
+Execute the following commands to retrieve the default response:
 <Tabs>
   <TabItem label="CURL">
 ```sh
@@ -153,7 +153,7 @@ Invoke-WebRequest -Uri http://localhost:8080/insert-your-custom-pattern-here -Me
 ```
   </TabItem>
 </Tabs>
-ResponseBody:
+Cuerpo de la respuesta:
 ```sh
 {
     "message": "Unimplemented"
@@ -166,7 +166,7 @@ ResponseBody:
 einar generate delete-controller delete-customer
 ```
 
-Here's an example of how the generated code will look:
+Aquí tienes un ejemplo de cómo se verá el código generado:
 ```sh
 func init() {
 	ioc.Registry(deleteCustomer, serverwrapper.NewEchoWrapper)
@@ -179,7 +179,7 @@ func deleteCustomer(e serverwrapper.EchoWrapper) {
 	})
 }
 ```
-`e serverwrapper.EchoWrapper` is a wrapper for the [official echo package](https://echo.labstack.com/). After generating the controller, you must manually replace the placeholder `/insert-your-custom-pattern-here` with the actual path you intend to use in your application.  The file `delete_customer.go` will be created in the following directory structure:
+`serverwrapper.EchoWrapper` es un envoltorio para el [paquete oficial Echo](https://echo.labstack.com/). Después de generar el controlador, debes reemplazar manualmente `/insert-your-custom-pattern-here` con la ruta real que deseas usar en tu aplicación. El archivo `delete_customer.go` se creará en la siguiente estructura de directorios:
 ```
 /app
   /adapter
@@ -187,8 +187,8 @@ func deleteCustomer(e serverwrapper.EchoWrapper) {
       /api
         - delete_customer.go  
 ```
-## 🌐 Check The Controller Response
-Execute the following requests to retrieve the default response:
+## 🌐 Verifica la Respuesta del Controlador
+Execute the following commands to retrieve the default response:
 <Tabs>
   <TabItem label="CURL">
 ```sh
@@ -202,7 +202,7 @@ Invoke-WebRequest -Uri http://localhost:8080/insert-your-custom-pattern-here -Me
 ```
   </TabItem>
 </Tabs>
-ResponseBody:
+Cuerpo de la respuesta:
 ```sh
 {
     "message": "Unimplemented"
@@ -215,7 +215,7 @@ ResponseBody:
 einar generate patch-controller patch-customer
 ```
 
-Here's an example of how the generated code will look:
+Aquí tienes un ejemplo de cómo se verá el código generado:
 ```sh
 func init() {
 	ioc.Registry(patchCustomer, serverwrapper.NewEchoWrapper)
@@ -228,7 +228,7 @@ func patchCustomer(e serverwrapper.EchoWrapper) {
 	})
 }
 ```
-`e serverwrapper.EchoWrapper` is a wrapper for the [official echo package](https://echo.labstack.com/). After generating the controller, you must manually replace the placeholder `/insert-your-custom-pattern-here` with the actual path you intend to use in your application.  The file `patch_customer.go` will be created in the following directory structure:
+`serverwrapper.EchoWrapper` es un envoltorio para el [paquete oficial Echo](https://echo.labstack.com/). Después de generar el controlador, debes reemplazar manualmente `/insert-your-custom-pattern-here` con la ruta real que deseas usar en tu aplicación. El archivo `patch_customer.go` se creará en la siguiente estructura de directorios:
 ```
 /app
   /adapter
@@ -236,8 +236,8 @@ func patchCustomer(e serverwrapper.EchoWrapper) {
       /api
         - patch_customer.go  
 ```
-## 🌐 Check The Controller Response
-Execute the following requests to retrieve the default response:
+## 🌐 Verifica la Respuesta del Controlador
+Execute the following commands to retrieve the default response:
 <Tabs>
   <TabItem label="CURL">
 ```sh
@@ -251,7 +251,7 @@ Invoke-WebRequest -Uri http://localhost:8080/insert-your-custom-pattern-here -Me
 ```
   </TabItem>
 </Tabs>
-ResponseBody:
+Cuerpo de la respuesta:
 ```sh
 {
     "message": "Unimplemented"

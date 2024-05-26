@@ -1,15 +1,15 @@
 ---
-title: Firestore Repository
+title: Repositorio de Firestore
 description: A reference page in my new Starlight docs site.
 ---
-EinarCLI allows you to install Firestore dependencies, directly include them in your code, generate repositories for Firestore database operations, and verify the availability of Firestore in your Google project when the application starts.
+EinarCLI te permite instalar dependencias de Firestore, incluirlas directamente en tu código, generar repositorios para operaciones de base de datos de Firestore y verificar la disponibilidad de Firestore en tu proyecto de Google al iniciar la aplicación.
 
 ## 🔥 Firestore installation
-Inside your project directory, run the following command to include Firestore in your project:
+Dentro del directorio de tu proyecto, ejecuta el siguiente comando para incluir Firestore en tu proyecto:
 ```sh
 einar install firestore
 ```
-This will generate the following files and directories within your project, setting up the necessary infrastructure for Firestore interaction:
+Esto generará los siguientes archivos y directorios dentro de tu proyecto, configurando la infraestructura necesaria para la interacción con Firestore:
 ```sh 
 /app
   /shared
@@ -21,11 +21,11 @@ This will generate the following files and directories within your project, sett
 ```
 
 ## 👨‍💻 Generate a New Custom Repository
-Inside your project directory, run the following command to create a new custom repository:
+Dentro del directorio de tu proyecto, ejecuta el siguiente comando para crear un nuevo repositorio personalizado:
 ```sh
 einar generate firestore-repository save-customer
 ```
-Here's an example of how the generated code will look:
+Aquí tienes un ejemplo de cómo se verá el código generado:
 ```sh
 type SaveCustomer func(ctx context.Context, input interface{}) error
 
@@ -44,7 +44,7 @@ func NewSaveCustomer(c *firestore.Client) SaveCustomer {
 	}
 }
 ```
-The file `save_customer.go` will be created in the following directory structure:
+El archivo `save_customer.go` se creará en la siguiente estructura de directorios:
 ```
 /app
   /adapter
@@ -53,8 +53,8 @@ The file `save_customer.go` will be created in the following directory structure
         - save_customer.go  
 ```
 
-### ✍️ Writing individual documents
-For writing individual documents, use the methods provided on `*firestore.DocumentRef`. The `SaveCustomer` function, for example, creates a new document within the `customers` collection based on provided input.
+### ✍️ Escribiendo documentos individuales
+Para escribir documentos individuales, utiliza los métodos proporcionados en `*firestore.DocumentRef`. La función `SaveCustomer`, por ejemplo, crea un nuevo documento dentro de la colección `customers` basado en la entrada proporcionada.
 ```sh
 type Customer struct {
 	ID     string
@@ -88,8 +88,8 @@ func NewSaveCustomer(c *firestore.Client) SaveCustomer {
 }
 ```
 
-### 📄🔍 Read individual document
-Use DocumentRef.Get to read a document. The result is a DocumentSnapshot. Call its Data method to obtain the entire document contents as a map. You can also obtain a single field with DataAt, or extract the data into a struct with DataTo with the type definition :
+### 📄🔍 Leer documentos individuales.
+Utiliza `DocumentRef.Get` para leer un documento. El resultado es un `DocumentSnapshot`. Llama a su método `Data` para obtener el contenido completo del documento como un mapa. También puedes obtener un único campo con `DataAt`, o extraer los datos en una estructura con `DataTo` utilizando su definición de tipo:
 
 ```sh
 type FindCustomerById func(ctx context.Context, input Customer) (Customer, error)
@@ -123,4 +123,4 @@ func NewFindCustomerById(c *firestore.Client) FindCustomerById {
 	}
 }
 ```
-📚🔍 [Explore More Usage Examples in Official Documentation.](https://pkg.go.dev/cloud.google.com/go/firestore)
+📚🔍 [Explora más ejemplos de uso en la Documentación Oficial.](https://pkg.go.dev/cloud.google.com/go/firestore)

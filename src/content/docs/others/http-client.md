@@ -24,7 +24,7 @@ Inside your project directory, run the following command to create a new custom 
 ```sh
 einar generate resty-client call-public-api
 ```
-Here's an example of how the generated code might look:
+Here's an example of how the generated code will look:
 
 ```sh
 type CallPublicApi func(ctx context.Context, input interface{}) (interface{}, error)
