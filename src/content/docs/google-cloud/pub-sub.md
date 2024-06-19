@@ -7,14 +7,14 @@ EinarCLI allows you to install Google PubSub dependencies, directly include them
 ## 📡 PubSub installation
 Inside your project directory, run the following command to include PubSub in your project:
 ```sh
-einar install pubsub
+einar install gcp-pubsub
 ```
 This will generate the following files and directories within your project, setting up the necessary infrastructure for PubSub interaction:
 ```sh 
 /app
   /shared
     /infrastructure
-      /pubsubclient
+      /gcppubsub
         - client.go
         /subscriptionwrapper
           - handle_message_acknowledgment.go
@@ -25,7 +25,7 @@ This will generate the following files and directories within your project, sett
 ## 👨‍💻 Generate a New Custom Publisher
 Inside your project directory, run the following command to create a new custom publisher:
 ```sh
-einar generate publisher publish-customer
+einar generate gcp-publisher publish-customer
 ```
 Here’s an example of how the generated code will look:
 ```sh
@@ -86,30 +86,28 @@ The file publish_customer.go will be created in the following directory structur
 /app
   /adapter
     /out
-      /publisher
+      /gcppublisher
         - publish_customer.go  
 ```
 ## 👨‍💻 Generate a New Custom Subscription
 Inside your project directory, run the following command to create a new custom subscription:
 ```sh
-einar generate subscription process-customer
+einar generate gcp-subscription process-customer
 ```
-Here’s an example of how the generated code might look:
+Here’s an example of how the generated code will look:
 ```sh
 func init() {
 	ioc.Registry(
 		newProcessCustomer,
-		subscriptionwrapper.NewSubscriptionManager,
-		subscriptionwrapper.NewHandleMessageAcknowledgement)
+		subscriptionwrapper.NewSubscriptionManager)
 }
 func newProcessCustomer(
 	sm subscriptionwrapper.SubscriptionManager,
-	handleMessageAck subscriptionwrapper.HandleMessageAcknowledgement,
 ) subscriptionwrapper.MessageProcessor {
 	subscriptionName := "INSERT_YOUR_SUBSCRIPTION_NAME_HERE"
 	subscriptionRef := sm.Subscription(subscriptionName)
 	subscriptionRef.ReceiveSettings.MaxOutstandingMessages = 5
-	messageProcessor := func(ctx context.Context, m *pubsub.Message) (statusCode int, err error) {
+	messageProcessor := func(ctx context.Context, m *pubsub.Message) (int, error) {
 		_, span := observability.Tracer.Start(ctx,
 			"messageProcessorStruct",
 			trace.WithSpanKind(trace.SpanKindConsumer), trace.WithAttributes(
@@ -117,29 +115,15 @@ func newProcessCustomer(
 				attribute.String("message.id", m.ID),
 				attribute.String("message.publishTime", m.PublishTime.String()),
 			))
+		defer span.End()
 		var input interface{}
-		defer func() {
-			statusCode = handleMessageAck(span,
-				&subscriptionwrapper.HandleMessageAcknowledgementDetails{
-					SubscriptionName: subscriptionRef.String(),
-					Error:            err,
-					Message:          m,
-					ErrorsRequiringNack: []error{
-						exception.INTERNAL_SERVER_ERROR,
-						exception.EXTERNAL_SERVER_ERROR,
-						exception.HTTP_NETWORK_ERROR,
-						exception.PUBSUB_BROKER_ERROR,
-					},
-					CustomLogFields: logger.CustomLogFields{
-						"customIndexField": "MyCustomFieldForIndexWhenSearchLogs",
-					},
-				})
-			span.End()
-		}()
 		if err := json.Unmarshal(m.Data, &input); err != nil {
-			return statusCode, err
+			span.SetStatus(codes.Error, err.Error())
+			m.Ack()
+			return http.StatusAccepted, err
 		}
-		return statusCode, nil
+		m.Ack()
+		return http.StatusOK, nil
 	}
 	go sm.WithMessageProcessor(messageProcessor).
 		WithPushHandler("/subscription/" + subscriptionName).
@@ -152,6 +136,6 @@ The file process_customer.go will be created in the following directory structur
 /app
   /adapter
     /in
-      /subscription
+      /gcpsubscription
         - process_customer.go  
 ```

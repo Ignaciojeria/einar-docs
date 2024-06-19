@@ -51,6 +51,23 @@ export default defineConfig({
 				{
 					label: 'Others',
 					autogenerate: { directory: 'others' },
+				},
+				{
+					label: 'Courses (soon)',
+					translations: {
+						es: 'Cursos (pronto)',
+					},
+					items: [
+						// Each item here is one entry in the navigation menu.
+						/*
+						{
+						label: 'Getting Started', 
+						link: '/getting-started/' ,
+						translations: {
+							es: 'Empezando',
+						}
+						},	*/
+					],
 				}
 				/*
 				{
