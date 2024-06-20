@@ -25,19 +25,16 @@ This will generate the following files and directories within your project, sett
 ## 👨‍💻 Generate a New Custom Publisher
 Inside your project directory, run the following command to create a new custom publisher:
 ```sh
-einar generate gcp-publisher publish-customer
-```
-Here’s an example of how the generated code will look:
-```sh
+
 type PublishCustomer func(ctx context.Context, input interface{}) error
 
 func init() {
 	ioc.Registry(
 		NewPublishCustomer,
-		pubsubclient.NewClient,
-		logger.NewLogger)
+		gcppubsub.NewClient,
+		logging.NewLogger)
 }
-func NewPublishCustomer(c *pubsub.Client, l logger.Logger) PublishCustomer {
+func NewPublishCustomer(c *pubsub.Client, logger logging.Logger) PublishCustomer {
 	topicName := "INSERT_YOUR_TOPIC_NAME_HERE"
 	topic := c.Topic(topicName)
 	return func(ctx context.Context, input interface{}) error {
@@ -65,13 +62,13 @@ func NewPublishCustomer(c *pubsub.Client, l logger.Logger) PublishCustomer {
 		messageID, err := result.Get(ctx)
 
 		if err != nil {
-			span.SetStatus(codes.Error, exception.PUBSUB_BROKER_ERROR.Error())
+			span.SetStatus(codes.Error, systemerr.PUBSUB_BROKER_ERROR.Error())
 			span.RecordError(err)
-			l.LogSpanError(span, exception.PUBSUB_BROKER_ERROR.Error(),
-				logger.CustomLogFields{
-					constants.Error: err.Error(),
-				})
-			return exception.PUBSUB_BROKER_ERROR
+			logger.SpanLogger(span).Error(
+				systemerr.PUBSUB_BROKER_ERROR.Error(),
+				constants.TopicName, topicName,
+				constants.Error, err.Error())
+			return systemerr.PUBSUB_BROKER_ERROR
 		}
 
 		span.SetStatus(codes.Ok, "Message published with ID: "+messageID)

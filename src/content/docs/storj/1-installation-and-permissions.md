@@ -7,7 +7,7 @@ Traditional cloud data storage services are more expensive than decentralized da
 ## 🚀 StorJ Uplink Installation
 Inside your project directory, run the following command to include StorJ Uplink in your project:
 ```sh
-einar install uplink
+einar install storj
 ```
 This will generate the following files and directories within your project, setting up the necessary infrastructure for StorJ Uplink interaction:
 
@@ -30,26 +30,14 @@ STORJ_ACCESS_GRANT="replace-by-your-generated-access-grant"
 ## 🪣 Generate a New Custom Bucket
 Inside your project directory, run the following command to create a new custom bucket:
 ```sh 
-einar generate uplink-bucket customer-contract-bucket
+einar generate storj-bucket customer-contract-bucket
 ```
-Here's an example of how the generated code will look:
 
+## Generated Constructor Details
+The `NewCustomerContractBucket` constructor initializes a `customer-contract-bucket` in Storj, managing the creation and configuration of the bucket, as well as error handling.
 ```sh 
-type CustomerContractBucket struct {
-	fileExpiration  time.Duration
-	sharedLinkCreds *edge.Credentials
-	bucketName      string
-	upLink          *storj.Uplink
-}
-
-func init() {
-	ioc.Registry(
-		NewCustomerContractBucket,
-		storj.NewUplink)
-}
-
-func NewCustomerContractBucket(ul *storj.Uplink) (storj.UplinkManager, error) {
-	sharedLinkExpiration := 2 * time.Minute
+func NewCustomerContractBucket(ul *storj.Uplink, logger logging.Logger) (storj.UplinkManager, error) {
+	sharedLinkExpiration := 10 * time.Minute
 	fileExpiration := 7 * 24 * time.Hour
 	bucketName := "customer-contract-bucket"
 	bucketFolderName := ""
@@ -94,26 +82,14 @@ func NewCustomerContractBucket(ul *storj.Uplink) (storj.UplinkManager, error) {
 		sharedLinkCreds: credentials,
 		bucketName:      bucketName,
 		upLink:          ul,
+		logger:          logger,
 	}
 	return bucket, nil
 }
+```
+## Upload Method : 
 
-func (b CustomerContractBucket) CreatePublicSharedLink(ctx context.Context, objectKey string) (string, error) {
-	_, span := observability.Tracer.Start(ctx,
-		"NewCustomerContractBucketCreatePublicSharedLink",
-		trace.WithSpanKind(trace.SpanKindInternal))
-	defer span.End()
-	// Create a public link that is served by linksharing service.
-	url, err := edge.JoinShareURL("https://link.storjshare.io",
-		b.sharedLinkCreds.AccessKeyID,
-		b.bucketName, objectKey, nil)
-	if err != nil {
-		span.RecordError(err)
-		return "", fmt.Errorf("could not create a shared link: %w", err)
-	}
-	return url, nil
-}
-
+```sh
 func (b CustomerContractBucket) Upload(ctx context.Context, objectKey string, dataToUpload []byte) error {
 	// Intitiate the upload of our Object to the specified bucket and key.
 	upload, err := b.upLink.Project.UploadObject(ctx, b.bucketName, objectKey, &uplink.UploadOptions{
@@ -139,6 +115,76 @@ func (b CustomerContractBucket) Upload(ctx context.Context, objectKey string, da
 	return nil
 }
 ```
+## CreatePublicSharedLink Method :
+
+```sh
+func (b CustomerContractBucket) CreatePublicSharedLink(ctx context.Context, objectKey string) (string, error) {
+	_, span := observability.Tracer.Start(ctx,
+		"NewCustomerContractBucketCreatePublicSharedLink",
+		trace.WithSpanKind(trace.SpanKindInternal))
+	defer span.End()
+	// Create a public link that is served by linksharing service.
+	url, err := edge.JoinShareURL("https://link.storjshare.io",
+		b.sharedLinkCreds.AccessKeyID,
+		b.bucketName, objectKey, nil)
+	if err != nil {
+		span.RecordError(err)
+		return "", fmt.Errorf("could not create a shared link: %w", err)
+	}
+	return url, nil
+}
+```
+## ListFiles Method :
+```sh
+func (b CustomerContractBucket) ListFiles(ctx context.Context) ([]string, error) {
+	_, span := observability.Tracer.Start(ctx, "NewCustomerContractBucketListFiles", trace.WithSpanKind(trace.SpanKindInternal))
+	defer span.End()
+	options := &uplink.ListObjectsOptions{
+		Recursive: true,
+	}
+	objectList := b.upLink.Project.ListObjects(ctx, b.bucketName, options)
+
+	var files []string
+	for objectList.Next() {
+		item := objectList.Item()
+		files = append(files, item.Key)
+	}
+
+	if err := objectList.Err(); err != nil {
+		span.RecordError(err)
+		return nil, fmt.Errorf("error listing files: %w", err)
+	}
+
+	return files, nil
+}
+```
+
+## Download Method :
+```sh
+func (b CustomerContractBucket) Download(ctx context.Context, objectKey string) ([]byte, error) {
+	_, span := observability.Tracer.Start(ctx, "NewCustomerContractBucketDownload", trace.WithSpanKind(trace.SpanKindInternal))
+	defer span.End()
+
+	// Start the download of the specified object from the bucket.
+	download, err := b.upLink.Project.DownloadObject(ctx, b.bucketName, objectKey, nil)
+	if err != nil {
+		span.RecordError(err)
+		return nil, fmt.Errorf("could not initiate download: %w", err)
+	}
+	defer download.Close()
+
+	// Read the data from the downloaded object.
+	var data bytes.Buffer
+	_, err = io.Copy(&data, download)
+	if err != nil {
+		span.RecordError(err)
+		return nil, fmt.Errorf("could not read data from download object: %w", err)
+	}
+
+	return data.Bytes(), nil
+}
+```
+
 The file `customer_contract_bucket.go` will be created in the following directory structure:
 ```
 /app

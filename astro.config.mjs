@@ -53,27 +53,17 @@ export default defineConfig({
 					autogenerate: { directory: 'others' },
 				},
 				{
+					label: 'NATS - Synadia Cloud',
+					autogenerate: { directory: 'synadia-cloud' },
+				},
+				/*
+				{
 					label: 'Courses (soon)',
 					translations: {
 						es: 'Cursos (pronto)',
-					},
-					items: [
-						// Each item here is one entry in the navigation menu.
-						/*
-						{
-						label: 'Getting Started', 
-						link: '/getting-started/' ,
-						translations: {
-							es: 'Empezando',
-						}
-						},	*/
-					],
-				}
+					}
+				}*/
 				/*
-				{
-					label: 'Synadia Cloud',
-					autogenerate: { directory: 'synadia-cloud' },
-				},
 				{
 					label: 'Fermyon Cloud',
 					autogenerate: { directory: 'fermyon-cloud' },
