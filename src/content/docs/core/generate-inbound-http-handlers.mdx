@@ -260,3 +260,50 @@ ResponseBody:
   </TabItem>
 
 </Tabs>
+
+# Bind & Validate Data
+By default, Einar includes inside Echo the [go-playground/validator](https://github.com/go-playground/validator) framework for validation, as shown in the example below.
+
+```sh
+
+type Customer struct {
+	Name  string `json:"name" validate:"required"`
+	Email string `json:"email" validate:"required,email"`
+}
+
+func init() {
+	ioc.Registry(postCustomer, serverwrapper.NewEchoWrapper)
+}
+func postCustomer(e serverwrapper.EchoWrapper) {
+	e.POST("/api/customer", func(c echo.Context) error {
+		var customer Customer
+		if err := c.Bind(&customer); err != nil {
+			return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+		}
+		if err := c.Validate(customer); err != nil {
+			return echo.NewHTTPError(http.StatusBadRequest,
+				map[string]string{
+					"message": err.Error(),
+				})
+		}
+		return c.JSON(http.StatusOK, map[string]string{
+			"message": "Unimplemented",
+		})
+	})
+}
+```
+CURL
+```sh
+curl --location 'http://localhost:8080/api/customer' \
+--header 'Content-Type: application/json' \
+--data '{
+    "name":"",
+    "email":""
+}'
+```
+ResponseBody
+```sh
+{
+    "message": "Key: 'Customer.Name' Error:Field validation for 'Name' failed on the 'required' tag\nKey: 'Customer.Email' Error:Field validation for 'Email' failed on the 'required' tag"
+}
+```
