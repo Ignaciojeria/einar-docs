@@ -53,10 +53,20 @@ export default defineConfig({
 					autogenerate: { directory: 'others' },
 				},
 				{
-					label: 'NATS - Synadia Cloud',
-					autogenerate: { directory: 'synadia-cloud' },
+					label: 'Ngrok',
+					autogenerate: { directory: 'ngrok' },
 				},
 				/*
+				{
+					label: 'NATS - Synadia Cloud',
+					autogenerate: { directory: 'synadia-cloud' },
+				},*/
+				/*
+        {
+					label: 'EinarCLI Powered Projects',
+					autogenerate: { directory: 'synadia-cloud' },
+				},
+	
 				{
 					label: 'Courses (soon)',
 					translations: {
