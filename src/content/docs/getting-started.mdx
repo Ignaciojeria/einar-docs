@@ -21,7 +21,19 @@ To start a new project, create an empty folder, open your terminal inside that f
 einar init my-first-einar-project
 ```
 
-This will create a new project in your current directory with all the necessary files and configurations for your app.
+This will create a new project in your current directory with all the necessary files and configurations for your app. Your main method will load all dependencies of your application using [einar-ioc dependency injection framework](https://github.com/Ignaciojeria/einar-ioc) :
+```sh
+//go:embed .version
+var version string
+
+func main() {
+	os.Setenv(constants.Version, version)
+	if err := ioc.LoadDependencies(); err != nil {
+		log.Fatal(err)
+	}
+	serverwrapper.Start()
+}
+```
 
 ## 🌐 Check application status
 Inside your project directory, run the following command to start the server:
