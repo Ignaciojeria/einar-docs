@@ -25,7 +25,7 @@ This will generate the following files and directories within your project, sett
 
 The Ngrok installation requires an Authtoken as an input parameter. To obtain the Authtoken, you need to create an account on the  [Ngrok HomePage.](https://ngrok.com/)
 
-Before generating your Authtoken, verify that the .env file in the root of your project contains the `NGROK_AUTHTOKEN` environment variable:
+After generating your Authtoken, verify that the .env file in the root of your project contains the `NGROK_AUTHTOKEN` environment variable:
 ```sh 
 NGROK_AUTHTOKEN="<TOKEN>"
 ```

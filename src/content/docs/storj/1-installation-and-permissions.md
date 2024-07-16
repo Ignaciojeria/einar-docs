@@ -21,7 +21,7 @@ This will generate the following files and directories within your project, sett
 ## 🔒 Permissions Setup
 The Uplink installation requires an Access Grant as an input parameter. The Access Grant can be obtained from the Satellite UI. [See the Storj documentation for more details](https://docs.storj.io/learn/tutorials/quickstart-uplink-cli/uploading-your-first-object/create-first-access-grant).
 
-Before generating your Access Grant, verify that the .env file in the root of your project contains the `STORJ_ACCESS_GRANT` environment variable:
+After generating your Access Grant, verify that the .env file in the root of your project contains the `STORJ_ACCESS_GRANT` environment variable:
 
 ```sh
 STORJ_ACCESS_GRANT="replace-by-your-generated-access-grant"
