@@ -41,6 +41,20 @@ export default defineConfig({
 					autogenerate: { directory: 'core' },
 				},
 				{
+					label: 'Tunnel',
+					autogenerate: { directory: 'ngrok' },
+				},
+				/*
+				{
+					label: 'NATS - Synadia Cloud',
+					autogenerate: { directory: 'synadia-cloud' },
+				},*/
+				/*
+				{
+					label: 'Einar AI Gateway',
+					autogenerate: { directory: 'einar-ai-gateway'},
+				},*/
+				{
 					label: 'Google Cloud',
 					autogenerate: { directory: 'google-cloud' },
 				},
@@ -52,17 +66,13 @@ export default defineConfig({
 					label: 'Others',
 					autogenerate: { directory: 'others' },
 				},
-				{
-					label: 'Ngrok',
-					autogenerate: { directory: 'ngrok' },
-				},
 				/*
 				{
-					label: 'NATS - Synadia Cloud',
-					autogenerate: { directory: 'synadia-cloud' },
-				},*/
+					label: 'Powered By Einar',
+					autogenerate: { directory: 'powered-by-einar'},
+				}*/
 				/*
-        {
+        		{
 					label: 'EinarCLI Powered Projects',
 					autogenerate: { directory: 'synadia-cloud' },
 				},

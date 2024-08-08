@@ -1,5 +1,5 @@
 ---
-title: Installation & Permissions
+title: Ngrok Tunnel
 description: A reference page in my new Starlight docs site.
 ---
 
