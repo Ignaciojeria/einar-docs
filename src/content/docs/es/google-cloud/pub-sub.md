@@ -17,7 +17,6 @@ Esto generará los siguientes archivos y directorios dentro de tu proyecto, conf
       /gcppubsub
         - client.go
         /subscriptionwrapper
-          - handle_message_acknowledgment.go
           - message_processor.go
           - subscription_manager.go
 ```
