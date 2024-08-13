@@ -34,11 +34,6 @@ func init() {
 }
 func NewSaveCustomer(connection *gorm.DB, logger logging.Logger) SaveCustomer {
 	return func(ctx context.Context, input interface{}) error {
-		_, span := observability.Tracer.Start(ctx,
-			"SaveCustomer",
-			trace.WithSpanKind(trace.SpanKindInternal))
-		defer span.End()
-		//PUT YOUR POSTGRESQL OPERATION HERE
 		return nil
 	}
 }

@@ -4,7 +4,7 @@ description: A reference page in my new Starlight docs site.
 ---
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-The einar-cli enables you to generate custom business use cases by automatically generating the necessary files and imports for managing your business logic. It utilizes OpenTelemetry to ensure complete observability, propagating context.Context as the first argument to unify traces, metrics, and logs. Additionally, einar includes a built-in dependency injection mechanism to facilitate the integration of various components.
+The einar-cli enables you to generate custom business use cases by automatically generating the necessary files and imports for managing your business logic.
 
 ## 👨‍💻 Generate a New UseCase
 Inside your project directory, run the following command to create a new custom usecase:
@@ -21,8 +21,6 @@ func init() {
 }
 func NewCreateCustomer() CreateCustomer {
 	return func(ctx context.Context, input interface{}) (interface{}, error) {
-		_, span := observability.Tracer.Start(ctx, "CreateCustomer")
-		defer span.End()
 		return input, nil
 	}
 }

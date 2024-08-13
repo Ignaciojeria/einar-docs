@@ -34,10 +34,6 @@ func init() {
 }
 func NewCallPublicApi(cli *resty.Client, logger logging.Logger) CallPublicApi {
 	return func(ctx context.Context, input interface{}) (interface{}, error) {
-		_, span := observability.Tracer.Start(ctx,
-			"CallPublicApi",
-			trace.WithSpanKind(trace.SpanKindInternal))
-		defer span.End()
 		return nil, nil
 	}
 }
