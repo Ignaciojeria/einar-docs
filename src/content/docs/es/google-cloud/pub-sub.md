@@ -41,17 +41,10 @@ func NewPublishCustomer(c *pubsub.Client, logger logging.Logger) PublishCustomer
 	topicName := "INSERT_YOUR_TOPIC_NAME_HERE"
 	topic := c.Topic(topicName)
 	return func(ctx context.Context, input interface{}) error {
-		_, span := observability.Tracer.Start(ctx, "PublishCustomer",
-			trace.WithSpanKind(trace.SpanKindProducer),
-			trace.WithAttributes(attribute.String(constants.TopicName, topicName)),
-		)
-		defer span.End()
-
 		bytes, err := json.Marshal(input)
 		if err != nil {
 			return err
 		}
-
 		message := &pubsub.Message{
 			Attributes: map[string]string{
 				"customAttribute1": "attr1",
@@ -59,23 +52,12 @@ func NewPublishCustomer(c *pubsub.Client, logger logging.Logger) PublishCustomer
 			},
 			Data: bytes,
 		}
-
 		result := topic.Publish(ctx, message)
 		// Get the server-generated message ID.
 		messageID, err := result.Get(ctx)
-
 		if err != nil {
-			span.SetStatus(codes.Error, systemerr.PUBSUB_BROKER_ERROR.Error())
-			span.RecordError(err)
-			logger.SpanLogger(span).Error(
-				systemerr.PUBSUB_BROKER_ERROR.Error(),
-				constants.TopicName, topicName,
-				constants.Error, err.Error())
 			return systemerr.PUBSUB_BROKER_ERROR
 		}
-
-		span.SetStatus(codes.Ok, "Message published with ID: "+messageID)
-
 		return nil
 	}
 }
@@ -108,17 +90,8 @@ func newProcessCustomer(
 	subscriptionRef := sm.Subscription(subscriptionName)
 	subscriptionRef.ReceiveSettings.MaxOutstandingMessages = 5
 	messageProcessor := func(ctx context.Context, m *pubsub.Message) (int, error) {
-		_, span := observability.Tracer.Start(ctx,
-			"messageProcessorStruct",
-			trace.WithSpanKind(trace.SpanKindConsumer), trace.WithAttributes(
-				attribute.String("subscription.name", subscriptionRef.String()),
-				attribute.String("message.id", m.ID),
-				attribute.String("message.publishTime", m.PublishTime.String()),
-			))
-		defer span.End()
 		var input interface{}
 		if err := json.Unmarshal(m.Data, &input); err != nil {
-			span.SetStatus(codes.Error, err.Error())
 			m.Ack()
 			return http.StatusAccepted, err
 		}

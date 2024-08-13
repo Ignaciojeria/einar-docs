@@ -119,16 +119,11 @@ func (b CustomerContractBucket) Upload(ctx context.Context, objectKey string, da
 
 ```sh
 func (b CustomerContractBucket) CreatePublicSharedLink(ctx context.Context, objectKey string) (string, error) {
-	_, span := observability.Tracer.Start(ctx,
-		"NewCustomerContractBucketCreatePublicSharedLink",
-		trace.WithSpanKind(trace.SpanKindInternal))
-	defer span.End()
 	// Create a public link that is served by linksharing service.
 	url, err := edge.JoinShareURL("https://link.storjshare.io",
 		b.sharedLinkCreds.AccessKeyID,
 		b.bucketName, objectKey, nil)
 	if err != nil {
-		span.RecordError(err)
 		return "", fmt.Errorf("could not create a shared link: %w", err)
 	}
 	return url, nil
@@ -137,8 +132,6 @@ func (b CustomerContractBucket) CreatePublicSharedLink(ctx context.Context, obje
 ## ListFiles Method :
 ```sh
 func (b CustomerContractBucket) ListFiles(ctx context.Context) ([]string, error) {
-	_, span := observability.Tracer.Start(ctx, "NewCustomerContractBucketListFiles", trace.WithSpanKind(trace.SpanKindInternal))
-	defer span.End()
 	options := &uplink.ListObjectsOptions{
 		Recursive: true,
 	}
@@ -151,7 +144,6 @@ func (b CustomerContractBucket) ListFiles(ctx context.Context) ([]string, error)
 	}
 
 	if err := objectList.Err(); err != nil {
-		span.RecordError(err)
 		return nil, fmt.Errorf("error listing files: %w", err)
 	}
 
@@ -162,13 +154,11 @@ func (b CustomerContractBucket) ListFiles(ctx context.Context) ([]string, error)
 ## Download Method :
 ```sh
 func (b CustomerContractBucket) Download(ctx context.Context, objectKey string) ([]byte, error) {
-	_, span := observability.Tracer.Start(ctx, "NewCustomerContractBucketDownload", trace.WithSpanKind(trace.SpanKindInternal))
-	defer span.End()
+
 
 	// Start the download of the specified object from the bucket.
 	download, err := b.upLink.Project.DownloadObject(ctx, b.bucketName, objectKey, nil)
 	if err != nil {
-		span.RecordError(err)
 		return nil, fmt.Errorf("could not initiate download: %w", err)
 	}
 	defer download.Close()
@@ -177,7 +167,6 @@ func (b CustomerContractBucket) Download(ctx context.Context, objectKey string) 
 	var data bytes.Buffer
 	_, err = io.Copy(&data, download)
 	if err != nil {
-		span.RecordError(err)
 		return nil, fmt.Errorf("could not read data from download object: %w", err)
 	}
 

@@ -21,8 +21,6 @@ func init() {
 }
 func NewCreateCustomer() CreateCustomer {
 	return func(ctx context.Context, input interface{}) (interface{}, error) {
-		_, span := observability.Tracer.Start(ctx, "CreateCustomer")
-		defer span.End()
 		return input, nil
 	}
 }

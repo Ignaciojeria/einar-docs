@@ -42,7 +42,6 @@ func NewPublishCustomer(c *pubsub.Client, logger logging.Logger) PublishCustomer
 		if err != nil {
 			return err
 		}
-
 		message := &pubsub.Message{
 			Attributes: map[string]string{
 				"customAttribute1": "attr1",
@@ -50,15 +49,12 @@ func NewPublishCustomer(c *pubsub.Client, logger logging.Logger) PublishCustomer
 			},
 			Data: bytes,
 		}
-
 		result := topic.Publish(ctx, message)
 		// Get the server-generated message ID.
 		_, err = result.Get(ctx)
-
 		if err != nil {
 			return systemerr.PUBSUB_BROKER_ERROR
 		}
-
 		return nil
 	}
 }

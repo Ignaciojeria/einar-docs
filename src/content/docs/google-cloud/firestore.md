@@ -36,10 +36,6 @@ func init() {
 }
 func NewSaveCustomer(c *firestore.Client) SaveCustomer {
 	return func(ctx context.Context, input interface{}) error {
-		_, span := observability.Tracer.Start(ctx,
-			"SaveCustomer",
-			trace.WithSpanKind(trace.SpanKindInternal))
-		defer span.End()
 		return nil
 	}
 }
@@ -73,14 +69,8 @@ func init() {
 func NewSaveCustomer(c *firestore.Client) SaveCustomer {
 	customers := c.Collection("customers")
 	return func(ctx context.Context, input Customer) error {
-		_, span := observability.Tracer.Start(ctx,
-			"SaveCustomer",
-			trace.WithSpanKind(trace.SpanKindInternal))
-		defer span.End()
-
 		var ref *firestore.DocumentRef = customers.Doc(input.ID)
 		if _, err := ref.Create(ctx, input); err != nil {
-      span.RecordError(err)
 			return err
 		}
 		return nil
@@ -102,21 +92,14 @@ func init() {
 func NewFindCustomerById(c *firestore.Client) FindCustomerById {
 	customers := c.Collection("customers")
 	return func(ctx context.Context, input Customer) (Customer, error) {
-		_, span := observability.Tracer.Start(ctx,
-			"FindCustomerById",
-			trace.WithSpanKind(trace.SpanKindInternal))
-		defer span.End()
-
 		var ref *firestore.DocumentRef = customers.Doc(input.ID)
 		docsnap, err := ref.Get(ctx)
 		if err != nil {
-			span.RecordError(err)
 			return Customer{}, err
 		}
 
 		var foundDocument Customer
 		if err := docsnap.DataTo(&foundDocument); err != nil {
-			span.RecordError(err)
 			return Customer{}, err
 		}
 		return foundDocument, nil
