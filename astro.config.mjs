@@ -41,6 +41,10 @@ export default defineConfig({
 					autogenerate: { directory: 'core' },
 				},
 				{
+					label: 'OpenTelemetry',
+					autogenerate: { directory: 'open-telemetry' },
+				},
+				{
 					label: 'Tunnel',
 					autogenerate: { directory: 'ngrok' },
 				},
