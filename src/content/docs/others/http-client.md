@@ -30,9 +30,9 @@ Here's an example of how the generated code will look:
 type CallPublicApi func(ctx context.Context, input interface{}) (interface{}, error)
 
 func init() {
-	ioc.Registry(NewCallPublicApi, newresty.NewClient, logging.NewLogger)
+	ioc.Registry(NewCallPublicApi, newresty.NewClient)
 }
-func NewCallPublicApi(cli *resty.Client, logger logging.Logger) CallPublicApi {
+func NewCallPublicApi(cli *resty.Client) CallPublicApi {
 	return func(ctx context.Context, input interface{}) (interface{}, error) {
 		return nil, nil
 	}

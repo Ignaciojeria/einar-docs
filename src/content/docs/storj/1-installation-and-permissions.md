@@ -36,7 +36,7 @@ einar generate storj-bucket customer-contract-bucket
 ## Generated Constructor Details
 The `NewCustomerContractBucket` constructor initializes a `customer-contract-bucket` in Storj, managing the creation and configuration of the bucket, as well as error handling.
 ```sh 
-func NewCustomerContractBucket(ul *storj.Uplink, logger logging.Logger) (storj.UplinkManager, error) {
+func NewCustomerContractBucket(ul *storj.Uplink) (storj.UplinkManager, error) {
 	sharedLinkExpiration := 10 * time.Minute
 	fileExpiration := 7 * 24 * time.Hour
 	bucketName := "customer-contract-bucket"
@@ -82,7 +82,6 @@ func NewCustomerContractBucket(ul *storj.Uplink, logger logging.Logger) (storj.U
 		sharedLinkCreds: credentials,
 		bucketName:      bucketName,
 		upLink:          ul,
-		logger:          logger,
 	}
 	return bucket, nil
 }

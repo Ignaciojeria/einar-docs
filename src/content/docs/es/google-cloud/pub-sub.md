@@ -33,10 +33,9 @@ type PublishCustomer func(ctx context.Context, input interface{}) error
 func init() {
 	ioc.Registry(
 		NewPublishCustomer,
-		gcppubsub.NewClient,
-		logging.NewLogger)
+		gcppubsub.NewClient)
 }
-func NewPublishCustomer(c *pubsub.Client, logger logging.Logger) PublishCustomer {
+func NewPublishCustomer(c *pubsub.Client) PublishCustomer {
 	topicName := "INSERT_YOUR_TOPIC_NAME_HERE"
 	topic := c.Topic(topicName)
 	return func(ctx context.Context, input interface{}) error {

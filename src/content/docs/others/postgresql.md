@@ -29,10 +29,9 @@ type SaveCustomer func(ctx context.Context, input interface{}) error
 func init() {
 	ioc.Registry(
 		NewSaveCustomer,
-		postgresql.NewConnection,
-		logging.NewLogger)
+		postgresql.NewConnection)
 }
-func NewSaveCustomer(connection *gorm.DB, logger logging.Logger) SaveCustomer {
+func NewSaveCustomer(connection *gorm.DB) SaveCustomer {
 	return func(ctx context.Context, input interface{}) error {
 		return nil
 	}
