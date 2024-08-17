@@ -3,7 +3,7 @@ title: Slog
 description: This site explains how to integrate the Slog logger into your EinarCLI application.
 ---
 
-EinarCLI allows you to integrate Slog directly into your code, enabling the generation of injectable dependencies for logging operations.
+EinarCLI allows you to integrate https://pkg.go.dev/log/slog directly into your code, enabling the generation of injectable dependencies for logging operations.
 
 ## 🛠️ Slog installation
 Inside your project directory, run the following command to include the Slog dependency in your project:
