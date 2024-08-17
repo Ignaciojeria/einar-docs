@@ -23,8 +23,12 @@ This will generate the following files and directories within your project, sett
 
 ## 👨‍💻 Generate a New Custom Publisher
 Inside your project directory, run the following command to create a new custom publisher:
-```sh
 
+```sh
+einar generate gcp-publisher publish-customer
+```
+
+```sh
 type PublishCustomer func(ctx context.Context, input interface{}) error
 
 func init() {
