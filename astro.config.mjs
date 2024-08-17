@@ -41,6 +41,10 @@ export default defineConfig({
 					autogenerate: { directory: 'core' },
 				},
 				{
+					label: 'Logging',
+					autogenerate: { directory: 'logging' },
+				},
+				{
 					label: 'OpenTelemetry',
 					autogenerate: { directory: 'open-telemetry' },
 				},
