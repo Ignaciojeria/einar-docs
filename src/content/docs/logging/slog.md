@@ -35,7 +35,7 @@ func myOnloadJob(logger slogging.Logger) {
 	logger.Info("Hello from structured logs :D", "customKey", "customValue")
 }
 ```
-In this example, the myOnloadJob function receives the logger as a dependency, allowing you to log structured information when the job is executed. The logger is automatically injected by EinarCLI, ensuring seamless integration with the rest of your application.
+In this example, the myOnloadJob function receives the logger as a dependency, allowing you to log structured information when the job is executed. The logger is automatically injected by EinarIOC, ensuring seamless integration with the rest of your application.
 
 When executed, the log will appear in the console output as follows:
 
