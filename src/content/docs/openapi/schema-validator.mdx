@@ -24,9 +24,9 @@ The create-customer-spec will be created in the following directory structure:
       - create_customer_spec.yaml
 ```
 
-## 👨‍💻 Example Usage
-
-```sh
+## 👨‍💻 Example - HTTP Server Request
+Here’s an example of how you can use the generated spec within an HTTP server:
+```go
 func init() {
 	ioc.Registry(
 		postCustomer,
@@ -35,13 +35,14 @@ func init() {
 }
 func postCustomer(e serverwrapper.EchoWrapper, spec openapi.CreateCustomerSpec) {
 	e.POST("/insert-your-custom-pattern-here", func(c echo.Context) error {
-		body, err := io.ReadAll(c.Request().Body)
+		bodyBytes, err := io.ReadAll(c.Request().Body)
+		defer c.Request().Body.Close()
 		if err != nil {
 			return c.JSON(http.StatusBadRequest, map[string]string{
 				"error": "Failed to read request body",
 			})
 		}
-		if err := spec.ValidateBytes(body); err != nil {
+		if err := spec.ValidateBytes(bodyBytes); err != nil {
 			return c.JSON(http.StatusBadRequest, map[string]string{
 				"error": err.Error(),
 			})
@@ -52,4 +53,4 @@ func postCustomer(e serverwrapper.EchoWrapper, spec openapi.CreateCustomerSpec) 
 	})
 }
 ```
-
+This example demonstrates how you can validate the incoming request body against the generated OpenAPI spec. The request body is read, validated, and a response is returned based on the validation outcome.
