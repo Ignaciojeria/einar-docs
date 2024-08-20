@@ -1,0 +1,65 @@
+---
+title: OpenAPI Spec Validator
+description: A reference page in my new Starlight docs site.
+---
+
+EinarCLI allows you to validate embedded OpenAPI contracts. It provides the flexibility to create the contract within your project and immediately validate it against the OpenAPI specification. This ensures that your API definitions are always up to standard, making it easier to maintain consistency and reliability throughout the development lifecycle.
+
+## 🛠️ Generate a New Embedded Spec
+
+Inside your project directory, run the following command to create a new Embedded Spec:
+
+```sh
+einar generate openapi create-customer-spec
+```
+
+The create-customer-spec will be created in the following directory structure:
+
+```sh
+/app
+  /shared
+    /openapi
+      - create_customer_spec_test.go
+      - create_customer_spec.go
+      - create_customer_spec.yaml
+```
+
+## 👨‍💻 Example Usage
+
+```sh
+type CustomerSpecRequest struct {
+	Name    string  `json:"name,omitempty"`
+	Contact Contact `json:"contact,omitempty"`
+}
+
+type Contact struct {
+	Email string `json:"email,omitempty"`
+	Phone string `json:"phone,omitempty"`
+}
+
+func init() {
+	ioc.Registry(
+		postCustomer,
+		serverwrapper.NewEchoWrapper,
+		openapi.NewCreateCustomerSpec)
+}
+func postCustomer(e serverwrapper.EchoWrapper, spec openapi.CreateCustomerSpec) {
+	e.POST("/insert-your-custom-pattern-here", func(c echo.Context) error {
+		var requestBody CustomerSpecRequest
+		if err := c.Bind(&requestBody); err != nil {
+			return c.JSON(http.StatusBadRequest, map[string]string{
+				"error": err.Error(),
+			})
+		}
+		if err := spec.Validate(requestBody); err != nil {
+			return c.JSON(http.StatusBadRequest, map[string]string{
+				"error": err.Error(),
+			})
+		}
+		return c.JSON(http.StatusOK, map[string]string{
+			"message": "Unimplemented",
+		})
+	})
+}
+```
+

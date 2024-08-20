@@ -44,6 +44,15 @@ export default defineConfig({
 					label: 'Logging',
 					autogenerate: { directory: 'logging' },
 				},
+				/*
+				{
+					label: 'JSON Schema',
+					autogenerate: { directory: 'json-schema' },
+				},*/
+				{
+					label: 'OpenAPI',
+					autogenerate: { directory: 'openapi' },
+				},
 				{
 					label: 'OpenTelemetry',
 					autogenerate: { directory: 'open-telemetry' },
