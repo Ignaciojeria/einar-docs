@@ -1,6 +1,6 @@
 ---
 title: OpenAPI Spec Validator
-description: A reference page in my new Starlight docs site.
+description: A detailed reference guide on validating embedded OpenAPI contracts in your Starlight docs site with EinarCLI.
 ---
 
 EinarCLI allows you to validate embedded OpenAPI contracts. It provides the flexibility to create the contract within your project and immediately validate it against the OpenAPI specification. This ensures that your API definitions are always up to standard, making it easier to maintain consistency and reliability throughout the development lifecycle.
@@ -24,8 +24,8 @@ The create-customer-spec will be created in the following directory structure:
       - create_customer_spec.yaml
 ```
 
-## 👨‍💻 Example - HTTP Server Request
-Here’s an example of how you can use the generated spec within an HTTP server:
+## 👨‍💻 Example - HTTP Server POST Request
+Here’s an example of how you can use the generated spec within an HTTP server POST request:
 ```go
 func init() {
 	ioc.Registry(
