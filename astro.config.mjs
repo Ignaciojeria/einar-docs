@@ -18,6 +18,9 @@ export default defineConfig({
 			social: {
 				github: 'https://github.com/ignaciojeria/einar',
 			},
+			components: {
+				TableOfContents: './src/components/TableOfContents.astro',
+			},
 			locales,
 			sidebar: [
 				{

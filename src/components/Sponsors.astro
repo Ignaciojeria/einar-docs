@@ -1,0 +1,67 @@
+---
+import { Image } from 'astro:assets'
+import servioSponsorLogo from '../assets/servio_sponsor.jpg'
+const sponsors = [
+  {
+    name: 'Servio Zambrano, Einar Expert',
+    img: servioSponsorLogo,
+    url: 'https://www.linkedin.com/in/servio-zambrano',
+    size: 'large'
+  }
+]
+---
+<section>
+    <h2>Sponsors ⭐</h2>
+    {sponsors.map(sponsor => (
+      <a href={sponsor.url} class={sponsor.size ?? ''}>
+        {sponsor.name}
+        <article>
+          <h4>{sponsor.name}</h4>
+          <Image height={sponsor.size === 'large' ? 48 : 24} src={sponsor.img} alt={sponsor.name}/>
+        </article>
+      </a>
+    ))}
+  </section>
+  
+  <style>
+    section {
+      display: flex;
+      flex-wrap: wrap;
+      border-radius: 0.75rem;
+      overflow: hidden;
+      gap: 0.25rem;
+      width: 100%;
+      margin-top: 1rem;
+    }
+    a {
+      width: 34%;
+      flex-grow: 1;
+    }
+    a.large {
+      width: 100%;
+    }
+    article {
+      display: flex;
+      background-color: var(--sl-color-gray-6);
+      justify-content: center;
+      align-items: center;
+      padding: 1.5rem;
+      width: 100%;
+    }
+    article:hover {
+      background-color: var(--sl-color-gray-1);
+    }
+    h4 {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      white-space: nowrap;
+      clip: rect(0 0 0 0);
+      clip-path: inset(50%);
+      overflow: hidden;
+    }
+    /* Remove the grayscale filter in dark mode */
+    :root[data-theme='dark'] article :global(img) {
+      filter: none;
+    }
+  </style>
