@@ -1,6 +1,17 @@
 ---
 import { Image } from 'astro:assets'
+import cofeeSponsorship from '../assets/nav-logo-stroke.webp'
 import servioSponsorLogo from '../assets/servio_sponsor.jpg'
+
+const sponsorship = [
+  {
+    name: 'Empower EinarCLI With Monetary Help',
+    img: cofeeSponsorship,
+    url: 'https://ko-fi.com/einarcli',
+    size: 'large'
+  }
+]
+
 const sponsors = [
   {
     name: 'Servio Zambrano, Einar Expert',
@@ -10,8 +21,22 @@ const sponsors = [
   }
 ]
 ---
+
 <section>
-    <h2>Sponsors ⭐</h2>
+  <h2>Sponsorship 🚀💰</h2>
+  {sponsorship.map(sponsorship => (
+    <a href={sponsorship.url} class={sponsorship.size ?? ''}>
+      {sponsorship.name}
+      <article>
+        <h4>{sponsorship.name}</h4>
+        <Image height={sponsorship.size === 'large' ? 48 : 24} src={sponsorship.img} alt={sponsorship.name}/>
+      </article>
+    </a>
+  ))}
+</section>
+
+<section>
+    <h2>Top Sponsors ⭐</h2>
     {sponsors.map(sponsor => (
       <a href={sponsor.url} class={sponsor.size ?? ''}>
         {sponsor.name}
