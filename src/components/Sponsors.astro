@@ -20,11 +20,12 @@ const sponsors = [
     size: 'large'
   }
 ]
+//href={sponsorship.url}
 ---
 <section>
   <h2>Sponsorship 🚀💰</h2>
   {sponsorship.map(sponsorship => (
-    <a href={sponsorship.url} class={sponsorship.size ?? ''}>
+    <a href="javascript:void(0);" onclick="my_modal_1.showModal()" class={sponsorship.size ?? ''}>
       {sponsorship.name}
       <article>
         <h4>{sponsorship.name}</h4>
@@ -32,8 +33,39 @@ const sponsors = [
       </article>
     </a>
   ))}
-
 </section>
+
+<dialog id="my_modal_1" class="modal">
+  <div class="modal-box">
+    <h3 class="text-lg font-bold">Payment Channels</h3>
+    <p class="py-4">Select a payment option to sponsor:</p>
+    
+    <!-- Payment Options Container -->
+    <div class="py-2 flex justify-center space-x-4 items-center">
+      <!-- Ko-fi Option -->
+      <a href="https://ko-fi.com/einarcli" target="_blank" rel="noopener noreferrer" class="flex items-center">
+        <span class="text-lg font-bold ">Ko-fi</span>
+        <img src={cofeeSponsorship.src} alt="Ko-fi Sponsorship" class="h-12" />
+      </a>
+      
+      <!-- Mercado Pago Option -->
+      <a href="https://mpago.la/2vxyFhn" target="_blank" rel="noopener noreferrer" class="flex items-center">
+        <span class="text-lg font-bold ">MERCADO PAGO</span>
+        <img src="https://http2.mlstatic.com/frontend-assets/auth-login-frontend/4ea367c6c0eedeb0ae63.svg" alt="Mercado Pago" class="h-12" />
+      </a>
+      
+
+    <div class="modal-action">
+      <button class="btn" onclick="document.getElementById('my_modal_1').close()">Close</button>
+    </div>
+  </div>
+</dialog>
+
+
+
+
+
+
 
 <section>
     <h2>Top Sponsors ⭐</h2>
@@ -46,7 +78,6 @@ const sponsors = [
         </article>
       </a>
     ))}
-<button class="btn btn-wide" >TEST BUTTON</button>
 </section>
   
   <style>
