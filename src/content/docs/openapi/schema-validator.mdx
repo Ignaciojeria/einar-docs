@@ -42,7 +42,7 @@ func postCustomer(e serverwrapper.EchoWrapper, spec openapi.CreateCustomerSpec) 
 				"error": "Failed to read request body",
 			})
 		}
-		if err := spec.ValidateBytes(bodyBytes); err != nil {
+		if err := spec.ValidateBodyBytes(bodyBytes); err != nil {
 			return c.JSON(http.StatusBadRequest, map[string]string{
 				"error": err.Error(),
 			})
