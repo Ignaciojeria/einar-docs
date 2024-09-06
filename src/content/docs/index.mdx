@@ -15,3 +15,29 @@ hero:
       link: https://github.com/Ignaciojeria/einar
       icon: external
 ---
+
+import { CardGrid, Card } from '@astrojs/starlight/components';
+
+<CardGrid stagger>
+
+	<Card title="Modular Design" icon="puzzle">
+  Einar includes a built-in dependency injection mechanism that supports abstract data types, allowing each component to be injected into another, making development more efficient and flexible.	
+  </Card>
+
+  <Card title="Enhance Your Code Testability" icon="open-book">
+    Einar enables the generation of components using abstract data types, allowing for easier testing in isolation or composition. This simplifies scenario testing and enhances maintainability, ensuring higher code quality.
+  </Card>
+  
+
+<Card title="OpenAPI Spec Support" icon="document">
+  Einar allows you to generate injectable components with an OpenAPI specification, enabling seamless validation of incoming requests or testing and validating your contracts anywhere in the application. This simplifies the integration of API documentation and validation across your system.
+</Card>
+
+
+<Card title="Boost Your Team Performance" icon="rocket">
+  Einar streamlines development by enabling modular, testable components and seamless API integration. This reduces development time, enhances collaboration, and improves code quality, boosting overall team efficiency.
+</Card>
+
+
+</CardGrid>
+
