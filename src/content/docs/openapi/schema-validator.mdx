@@ -10,65 +10,65 @@ EinarCLI allows you to validate embedded OpenAPI contracts. It provides the flex
 Inside your project directory, run the following command to create a new Embedded Spec:
 
 ```sh
-einar generate openapi create-customer-spec
+einar generate openapi customer-spec
 ```
 
-The create-customer-spec will be created in the following directory structure:
+The customer-spec will be created in the following directory structure:
 
 ```sh
 /app
   /shared
     /openapi
-      - create_customer_spec_test.go
-      - create_customer_spec.go
-      - create_customer_spec.json
+      - customer_spec_test.go
+      - customer_spec.go
+      - customer_spec.json
 ```
 
 Here's an example of how the generated code will look:
 ```sh
-type CreateCustomerSpec struct {
+type CustomerSpec struct {
 	APIReferenceHTML string
 	HelloEndpoint    *contract.Endpoint
 	GreetEndpoint    *contract.Endpoint
 }
 
-//go:embed create_customer_spec.json
-var create_customer_spec []byte
+//go:embed customer_spec.json
+var customer_spec []byte
 
 func init() {
-	ioc.Registry(NewCreateCustomerSpec)
+	ioc.Registry(NewCustomerSpec)
 }
 
-func NewCreateCustomerSpec() (CreateCustomerSpec, error) {
+func NewCustomerSpec() (CustomerSpec, error) {
 	apiReferenceHTML, err := scalar.ApiReferenceHTML(&scalar.Options{
-		SpecContent: string(create_customer_spec),
+		SpecContent: string(customer_spec),
 	})
 	if err != nil {
-		return CreateCustomerSpec{}, err
+		return CustomerSpec{}, err
 	}
 	helloEndpoint, err := contract.LoadSpecEndpoint(
 		contract.EndpointDetails{
-			ContractData: create_customer_spec, 
+			ContractData: customer_spec, 
 			Path:         "/hello",
 			HTTPMethod:   "POST",
 			ContentType:  "application/json",
 		},
 	)
 	if err != nil {
-		return CreateCustomerSpec{}, err
+		return CustomerSpec{}, err
 	}
 	greetEndpoint, err := contract.LoadSpecEndpoint(
 		contract.EndpointDetails{
-			ContractData: create_customer_spec,
+			ContractData: customer_spec,
 			Path:         "/greet",
 			HTTPMethod:   "POST",
 			ContentType:  "application/json",
 		},
 	)
 	if err != nil {
-		return CreateCustomerSpec{}, err
+		return CustomerSpec{}, err
 	}
-	return CreateCustomerSpec{
+	return CustomerSpec{
 		APIReferenceHTML: apiReferenceHTML,
 		HelloEndpoint:    helloEndpoint,
 		GreetEndpoint:    greetEndpoint}, nil
