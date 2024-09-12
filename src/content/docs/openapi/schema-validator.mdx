@@ -1,5 +1,5 @@
 ---
-title: OpenAPI Spec Validator
+title: OpenAPI Spec
 description: A detailed reference guide on validating embedded OpenAPI contracts in your Starlight docs site with EinarCLI.
 ---
 
@@ -21,36 +21,100 @@ The create-customer-spec will be created in the following directory structure:
     /openapi
       - create_customer_spec_test.go
       - create_customer_spec.go
-      - create_customer_spec.yaml
+      - create_customer_spec.json
 ```
 
-## 👨‍💻 Example - HTTP Server POST Request
-Here’s an example of how you can use the generated spec within an HTTP server POST request:
+Here's an example of how the generated code will look:
+```sh
+type CreateCustomerSpec struct {
+	APIReferenceHTML string
+	HelloEndpoint    *contract.Endpoint
+	GreetEndpoint    *contract.Endpoint
+}
+
+//go:embed create_customer_spec.json
+var create_customer_spec []byte
+
+func init() {
+	ioc.Registry(NewCreateCustomerSpec)
+}
+
+func NewCreateCustomerSpec() (CreateCustomerSpec, error) {
+	apiReferenceHTML, err := scalar.ApiReferenceHTML(&scalar.Options{
+		SpecContent: string(create_customer_spec),
+	})
+	if err != nil {
+		return CreateCustomerSpec{}, err
+	}
+	helloEndpoint, err := contract.LoadSpecEndpoint(
+		contract.EndpointDetails{
+			ContractData: create_customer_spec, 
+			Path:         "/hello",
+			HTTPMethod:   "POST",
+			ContentType:  "application/json",
+		},
+	)
+	if err != nil {
+		return CreateCustomerSpec{}, err
+	}
+	greetEndpoint, err := contract.LoadSpecEndpoint(
+		contract.EndpointDetails{
+			ContractData: create_customer_spec,
+			Path:         "/greet",
+			HTTPMethod:   "POST",
+			ContentType:  "application/json",
+		},
+	)
+	if err != nil {
+		return CreateCustomerSpec{}, err
+	}
+	return CreateCustomerSpec{
+		APIReferenceHTML: apiReferenceHTML,
+		HelloEndpoint:    helloEndpoint,
+		GreetEndpoint:    greetEndpoint}, nil
+}
+```
+
+## 👨‍💻 Tutorial: How to Generate Spec Docs
+Here’s an example of how to use the generated spec in an HTTP server GET request to serve spec documentation:
+
+1.- Install the HTTP server if not installed:
+```sh
+einar install labstack-echo
+```
+
+2.- Generate your custom GET controller to serve your spec documentation:
+```sh
+einar generate get-controller serve-docs
+```
+The generated controller will look like:
 ```go
 func init() {
-	ioc.Registry(
-		postCustomer,
-		serverwrapper.NewEchoWrapper,
-		openapi.NewCreateCustomerSpec)
+	ioc.Registry(serveDocs, serverwrapper.NewEchoWrapper)
 }
-func postCustomer(e serverwrapper.EchoWrapper, spec openapi.CreateCustomerSpec) {
-	e.POST("/insert-your-custom-pattern-here", func(c echo.Context) error {
-		bodyBytes, err := io.ReadAll(c.Request().Body)
-		defer c.Request().Body.Close()
-		if err != nil {
-			return c.JSON(http.StatusBadRequest, map[string]string{
-				"error": "Failed to read request body",
-			})
-		}
-		if err := spec.ValidateBodyBytes(bodyBytes); err != nil {
-			return c.JSON(http.StatusBadRequest, map[string]string{
-				"error": err.Error(),
-			})
-		}
+func serveDocs(e serverwrapper.EchoWrapper) {
+	e.GET("/insert-your-custom-pattern-here", func(c echo.Context) error {
 		return c.JSON(http.StatusOK, map[string]string{
 			"message": "Unimplemented",
 		})
 	})
 }
 ```
-This example demonstrates how you can validate the incoming request body against the generated OpenAPI spec. The request body is read, validated, and a response is returned based on the validation outcome.
+3.- Inject your spec using EinarIOC and serve it as HTML:
+```go
+func init() {
+	ioc.Registry(serveDocs,
+		serverwrapper.NewEchoWrapper,
+		openapi.NewCreateCustomerSpec)
+}
+func serveDocs(
+	e serverwrapper.EchoWrapper,
+	spec openapi.CreateCustomerSpec) {
+	e.GET("/docs", func(c echo.Context) error {
+		return c.HTML(http.StatusOK, spec.APIReferenceHTML)
+	})
+}
+```
+4.- Run your app by executing `go run main.go`, and open http://localhost:8080/docs in your browser. You will see the following:
+
+![Descripción de la imagen](../../../assets/spec.jpeg)
