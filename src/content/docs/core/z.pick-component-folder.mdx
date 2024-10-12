@@ -1,0 +1,37 @@
+---
+title: Select Component Folder
+description: A reference page in my new Starlight docs site.
+---
+
+EinarCLI allows you to select the folder where components will be generated. This applies to all components created by Einar.
+
+## 👨‍💻 Select folder for any Einar component.
+
+We are going to select the folder for HTTP controllers, organizing components for `orders`, `payments`, and `customers`.
+
+Inside your project directory, run the following commands to create new controllers within the `orders`, `payments`, and `customers` folders:
+```sh
+einar generate post-controller orders/create-order
+einar generate post-controller payments/create-payment-request
+einar generate post-controller customers/create-customer
+```
+
+The files `create_order.go`, `create_payment_request.go`, and `create_customer.go` will be created in the following directory structure:
+```sh
+/app
+  /orders
+    /adapter
+      /in
+        /controller
+          - create_order.go
+  /payments
+    /adapter
+      /in
+        /controller
+          - create_payment_request.go
+  /customers
+    /adapter
+      /in
+        /controller
+          - create_customer.go
+```
