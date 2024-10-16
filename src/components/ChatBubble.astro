@@ -1,5 +1,5 @@
 <div class="toast toast-end">
-    <span class="indicator-item badge badge-accent">🚀 work with us</span>
+    <span id="dynamic-message" class="indicator-item badge badge-accent">🚀 work with us</span>
     <button class="btn btn-xs btn-outline btn-accent sm:btn-sm md:btn-md lg:btn-lg"> <!-- Aquí cambiamos btn-lg para agrandar el botón -->
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -15,4 +15,14 @@
       </svg>
     </button>
   </div>
+
+  <script>
+    const messages = ["🚀 work with us", "💬 chat with us", "📖 learn with us", "🤖 need help?"];
+    let index = 0;
   
+    setInterval(() => {
+      const messageElement = document.getElementById("dynamic-message");
+      index = (index + 1) % messages.length;
+      messageElement.textContent = messages[index];
+    }, 2300);
+  </script>
