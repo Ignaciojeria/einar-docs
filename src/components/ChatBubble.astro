@@ -92,7 +92,7 @@
 
   // Función para enviar el mensaje solo si el campo de texto no está vacío
   function sendMessage() {
-    const chatInput = document.getElementById('chat-input');
+    const chatInput:any = document.getElementById('chat-input');
     const message = chatInput.value.trim();
     if (message) {
       addMessageToChat(message);  // Añadir el mensaje del usuario
@@ -122,7 +122,7 @@
   function stopInteraction() {
     addMessageToChat("Interacción detenida. Puedes enviar otro mensaje.", false);
 
-    const chatInput = document.getElementById('chat-input');
+    const chatInput:any = document.getElementById('chat-input');
     chatInput.disabled = false;
     chatInput.placeholder = 'Type your message...';
 
