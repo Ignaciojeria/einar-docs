@@ -92,32 +92,43 @@
 
   // Función para enviar el mensaje solo si el campo de texto no está vacío
   function sendMessage() {
-    const chatInput:any = document.getElementById('chat-input');
-    const message = chatInput.value.trim();
-    if (message) {
-      addMessageToChat(message);  // Añadir el mensaje del usuario
-      chatInput.value = '';  // Limpiar el campo de entrada
-      clearTimeout(autoMessageTimeout);  // Cancelar el mensaje automático
-      userResponded = true;  // Marcar que el usuario ha respondido
+  const chatInput: any = document.getElementById('chat-input');
+  const message = chatInput.value.trim();
+  if (message) {
+    // Añadir el mensaje del usuario al chat
+    addMessageToChat(message);
+    chatInput.value = ''; // Limpiar el campo de entrada
+    chatInput.disabled = true; // Deshabilitar el campo de entrada
+    chatInput.placeholder = 'Esperando respuesta...';
 
-      // Deshabilitar el campo de entrada y cambiar el placeholder
-      chatInput.disabled = true;
-      chatInput.placeholder = 'Esperando respuesta...';
-
-      // Cambiar el ícono de enviar por un ícono de "stop"
-      const sendIcon = document.getElementById('send-icon');
-      sendIcon.innerHTML = `
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-        </svg>
-      `;
-
-      // Añadir funcionalidad de "stop" al botón de enviar
-      sendButton.removeEventListener('click', sendMessage);
-      sendButton.addEventListener('click', stopInteraction);
-    }
+    // Realizar la solicitud HTTP POST al API
+    fetch('https://einar-5chcbovkta-uc.a.run.app/chat-message', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ content: message })
+    })
+    .then(response => response.json())
+    .then((data: any) => {
+      // Añadir la respuesta del API al chat
+      if (data && data.response) {
+        addMessageToChat(data.response, false);
+      } else {
+        addMessageToChat("Lo siento, no pude obtener una respuesta. Inténtalo de nuevo más tarde.", false);
+      }
+    })
+    .catch((error: any) => {
+      console.error('Error:', error);
+      addMessageToChat("Hubo un problema al conectar con el servidor. Inténtalo de nuevo más tarde.", false);
+    })
+    .finally(() => {
+      // Habilitar el campo de entrada nuevamente
+      chatInput.disabled = false;
+      chatInput.placeholder = 'Type your message...';
+    });
   }
-
+}
   // Función para manejar la interacción de "Stop"
   function stopInteraction() {
     addMessageToChat("Interacción detenida. Puedes enviar otro mensaje.", false);
@@ -166,4 +177,7 @@
     index = (index + 1) % messages.length;
     messageElement.textContent = messages[index];
   }, 2300);
+
+
+
 </script>
