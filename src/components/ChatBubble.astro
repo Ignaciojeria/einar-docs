@@ -51,6 +51,7 @@
 </div>
 
 <script>
+  var strategy:string = "HowToHelp"
   let userResponded = false; // Variable para rastrear si el usuario ya ha respondido
 
   // Función para cerrar el chat y mostrar el contenido por defecto
@@ -117,13 +118,17 @@
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ content: message })
+      body: JSON.stringify({ 
+        promptStrategy: strategy,
+        content: message 
+      })
     })
     .then(response => response.json())
     .then((data: any) => {
       // Añadir la respuesta del API al chat
       if (data && data.response) {
         addMessageToChat(data.response, false);
+        strategy = data.promptStrategy
       } else {
         addMessageToChat("Lo siento, no pude obtener una respuesta. Inténtalo de nuevo más tarde.", false);
       }
