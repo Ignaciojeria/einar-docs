@@ -52,6 +52,7 @@
 
 <script>
   var strategy:string = "HowToHelp"
+  var context:string = "¡Bienvenido/a! Estamos aquí para ayudarte a llevar tu negocio al siguiente nivel con nuestras soluciones digitales.\nAquí hay algunas cosas con las que podemos ayudarte:\n🛠 Construcción de productos digitales\n🔄 Migración de productos digitales\n🛠 Integración de productos digitales\n🤖 Implementa nuestro ChatBot en tu sitio\n¿Cuál te interesa más?"
   let userResponded = false; // Variable para rastrear si el usuario ya ha respondido
 
   // Función para cerrar el chat y mostrar el contenido por defecto
@@ -120,6 +121,7 @@
       },
       body: JSON.stringify({ 
         promptStrategy: strategy,
+        contentContext: context,
         content: message 
       })
     })
@@ -129,6 +131,7 @@
       if (data && data.response) {
         addMessageToChat(data.response, false);
         strategy = data.promptStrategy
+        context = data.response
       } else {
         addMessageToChat("Lo siento, no pude obtener una respuesta. Inténtalo de nuevo más tarde.", false);
       }
