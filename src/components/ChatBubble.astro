@@ -1,7 +1,7 @@
 <div class="toast toast-end" id="chat-box-container">
   <!-- Modal de chat -->
   <div class="bg-base-100 shadow-xl rounded-lg p-4 h-100 w-full max-w-lg flex flex-col hidden" id="chat-box">
-    <h2 class="text-xl font-bold mb-4">🚀 Chat with us! 
+    <h2 class="text-xl font-bold mb-4">Chat with us! <div class="badge badge-primary">powered by einar 🚀</div>
       <span id="close-button" class="absolute top-0 right-0 badge badge-accent p-2 cursor-pointer">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -114,7 +114,9 @@
     chatInput.placeholder = 'Esperando respuesta...';
 
     // Realizar la solicitud HTTP POST al API
-    fetch('https://einar-5chcbovkta-uc.a.run.app/chat-message', {
+    let host ='https://einar-5chcbovkta-uc.a.run.app'
+    //let host ='http://localhost'
+    fetch(host+'/chat-message', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
