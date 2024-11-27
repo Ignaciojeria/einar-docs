@@ -60,13 +60,7 @@ export default defineConfig({
     {
     	label: 'JSON Schema',
     	autogenerate: { directory: 'json-schema' },
-    },*/
-    {
-      label: 'OpenAPI',
-      autogenerate: {
-        directory: 'openapi'
-      }
-    }, {
+    },*/ {
       label: 'OpenTelemetry',
       autogenerate: {
         directory: 'open-telemetry'
@@ -102,7 +96,13 @@ export default defineConfig({
       autogenerate: {
         directory: 'others'
       }
-    }
+    },
+    {
+      label: 'Deprecated - OpenAPI',
+      autogenerate: {
+        directory: 'openapi'
+      }
+    },
     /*
     {
     	label: 'Powered By Einar',

@@ -1,0 +1,190 @@
+---
+title: Bind & Validate Data Tutorial
+description: A detailed reference guide on validating embedded OpenAPI contracts in your Starlight docs site with EinarCLI.
+---
+
+1.- Inside your project directory, run the following command to create a new embedded spec:
+```sh
+einar generate openapi customer-spec
+```
+[For more details, learn how to set up Application-Embedded OpenAPI Spec Docs here.](https://ignaciojeria.github.io/openapi/0-schema-validator/)
+
+2.- Replace the content of the `customer_spec.json` file with your defined OpenAPI specification. We will use the following as an example:
+
+```sh
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Customer API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/customer": {
+      "post": {
+        "summary": "Create a new customer",
+        "operationId": "createCustomer",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Customer"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Customer created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Customer": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Customer's name"
+          },
+          "email": {
+            "type": "string",
+            "description": "Customer's email",
+            "format": "email"
+          }
+        },
+        "required": [
+          "name",
+          "email"
+        ]
+      }
+    }
+  }
+}
+```
+3.- Replace the default registered endpoints in the `customer_spec.go` file according to your defined OpenAPI specification:
+
+```go
+type CustomerSpec struct {
+	APIReferenceHTML       string
+	CreateCustomerEndpoint *contract.Endpoint
+}
+
+//go:embed customer_spec.json
+var customer_spec []byte
+
+func init() {
+	ioc.Registry(NewCustomerSpec)
+}
+
+func NewCustomerSpec() (CustomerSpec, error) {
+	apiReferenceHTML, err := scalar.ApiReferenceHTML(&scalar.Options{
+		SpecContent: string(customer_spec),
+	})
+	if err != nil {
+		return CustomerSpec{}, err
+	}
+	createCustomerEndpoint, err := contract.LoadSpecEndpoint(
+		contract.EndpointDetails{
+			ContractData: customer_spec,
+			Path:         "/customer",
+			HTTPMethod:   "POST",
+			ContentType:  "application/json",
+		},
+	)
+	if err != nil {
+		return CustomerSpec{}, err
+	}
+	return CustomerSpec{
+		APIReferenceHTML:       apiReferenceHTML,
+		CreateCustomerEndpoint: createCustomerEndpoint}, nil
+}
+```
+
+4.- Inject your specification into your `post_customer.go` controller and validate:
+
+```go
+package api
+
+import (
+	"example-project/app/shared/infrastructure/serverwrapper"
+	"example-project/app/shared/openapi"
+	"io"
+	"net/http"
+
+	ioc "github.com/Ignaciojeria/einar-ioc/v2"
+	"github.com/labstack/echo/v4"
+)
+
+func init() {
+	ioc.Registry(
+		postCustomer,
+		serverwrapper.NewEchoWrapper,
+		openapi.NewCustomerSpec,
+	)
+}
+
+func postCustomer(
+	e serverwrapper.EchoWrapper,
+	spec openapi.CustomerSpec) {
+	e.POST("/customer/create", func(c echo.Context) error {
+		// Read request body as raw bytes
+		requestBytes, err := io.ReadAll(c.Request().Body)
+		if err != nil {
+			return c.JSON(http.StatusBadRequest, map[string]string{
+				"error":   err.Error(),
+				"message": "Error reading request body",
+			})
+		}
+
+		// Validate the incoming request as bytes over OpenAPISpec Endpoint
+		if err := spec.CreateCustomerEndpoint.ValidateBodyBytes(requestBytes); err != nil {
+			return c.JSON(http.StatusBadRequest, map[string]string{
+				"error":   err.Error(),
+				"message": "Error validating request body (raw bytes)",
+			})
+		}
+
+		// OR: Validate after binding the request into a struct (marshaling)
+		type CreateCustomerRequest struct {
+			Name  string `json:"name,omitempty"`
+			Email string `json:"email,omitempty"`
+		}
+
+		var createCustomerRequest CreateCustomerRequest
+
+		// Bind the request body into the struct
+		if err := c.Bind(&createCustomerRequest); err != nil {
+			return c.JSON(http.StatusBadRequest, map[string]string{
+				"error":   err.Error(),
+				"message": "Error binding request body to struct",
+			})
+		}
+
+		// Validate the marshaled request body over OpenAPISpec Endpoint
+		if err := spec.CreateCustomerEndpoint.ValidateBodyInterface(createCustomerRequest); err != nil {
+			return c.JSON(http.StatusBadRequest, map[string]string{
+				"error":   err.Error(),
+				"message": "Error validating request body (marshaled struct)",
+			})
+		}
+
+		return c.JSON(http.StatusOK, map[string]string{
+			"message": "Unimplemented",
+		})
+	})
+}
+```

@@ -9,6 +9,331 @@ EinarCLI allows you to generate custom controllers with the necessary files and 
 ## 👨‍💻 Generate a New Controller
 
 Inside your project directory, run the following command to create a new controller:
+
+<Tabs>
+<TabItem label="Fuego">
+
+<Tabs>
+
+  <TabItem label="POST">
+```sh
+einar generate post-controller post-customer
+```
+
+Here's an example of how the generated code will look:
+```sh
+func init() {
+	ioc.Registry(postCustomer, httpserver.New)
+}
+func postCustomer(s httpserver.Server) {
+	fuego.Post(s.Manager, "/insert-your-custom-pattern-here",
+		func(c *fuego.ContextNoBody) (any, error) {
+
+			return "unimplemented", nil
+		}, option.Summary("postCustomer"))
+}
+```
+`s httpserver.Server` is a wrapper for the [official fuego package](https://github.com/go-fuego/fuego). After generating the controller, you must manually replace the placeholder `/insert-your-custom-pattern-here` with the actual path you intend to use in your application. The file `post_customer.go` will be created in the following directory structure:
+```
+/app
+  /adapter
+    /in
+      /api
+        - post_customer.go  
+```
+
+## 🌐 Check The Controller Response
+Execute the following request to retrieve the default response of your generated controller:
+
+<Tabs>
+  <TabItem label="CURL">
+```sh
+curl -X POST http://localhost:8080/insert-your-custom-pattern-here
+```
+  </TabItem>
+
+  <TabItem label="Windows PowerShell">
+```sh
+Invoke-WebRequest -Uri http://localhost:8080/insert-your-custom-pattern-here -Method POST
+```
+  </TabItem>
+</Tabs>
+
+ResponseBody:
+```sh
+{
+    "message": "Unimplemented"
+}
+```
+  </TabItem>
+
+  <TabItem label="GET">
+```sh
+einar generate get-controller get-customer
+```
+
+Here's an example of how the generated code will look:
+```sh
+func init() {
+	ioc.Registry(getCustomer, httpserver.New)
+}
+func getCustomer(s httpserver.Server) {
+	fuego.Get(s.Manager, "/insert-your-custom-pattern-here",
+		func(c *fuego.ContextNoBody) (any, error) {
+
+			return "unimplemented", nil
+		}, option.Summary("getCustomer"))
+}
+```
+`s httpserver.Server` is a wrapper for the [official fuego package](https://github.com/go-fuego/fuego). After generating the controller, you must manually replace the placeholder `/insert-your-custom-pattern-here` with the actual path you intend to use in your application. The file `get_customer.go` will be created in the following directory structure:
+```
+/app
+  /adapter
+    /in
+      /api
+        - get_customer.go  
+```
+## 🌐 Check The Controller Response
+Execute the following request to retrieve the default response:
+<Tabs>
+  <TabItem label="CURL">
+```sh
+curl -X GET http://localhost:8080/insert-your-custom-pattern-here
+```
+  </TabItem>
+
+  <TabItem label="Windows PowerShell">
+```sh
+Invoke-WebRequest -Uri http://localhost:8080/insert-your-custom-pattern-here -Method GET
+```
+  </TabItem>
+</Tabs>
+ResponseBody:
+```sh
+{
+    "message": "Unimplemented"
+}
+```
+  </TabItem>
+
+  <TabItem label="PUT">
+```sh
+einar generate put-controller put-customer
+```
+
+Here's an example of how the generated code will look:
+```sh
+func init() {
+	ioc.Registry(putCustomer, httpserver.New)
+}
+func putCustomer(s httpserver.Server) {
+	fuego.Put(s.Manager, "/insert-your-custom-pattern-here",
+		func(c *fuego.ContextNoBody) (any, error) {
+
+			return "unimplemented", nil
+		}, option.Summary("putCustomer"))
+}
+```
+`s httpserver.Server` is a wrapper for the [official fuego package](https://github.com/go-fuego/fuego). After generating the controller, you must manually replace the placeholder `/insert-your-custom-pattern-here` with the actual path you intend to use in your application. The file `put_customer.go` will be created in the following directory structure:
+```
+/app
+  /adapter
+    /in
+      /api
+        - put_customer.go  
+```
+## 🌐 Check The Controller Response
+Execute the following requests to retrieve the default response:
+<Tabs>
+  <TabItem label="CURL">
+```sh
+curl -X PUT http://localhost:8080/insert-your-custom-pattern-here
+```
+  </TabItem>
+
+  <TabItem label="Windows PowerShell">
+```sh
+Invoke-WebRequest -Uri http://localhost:8080/insert-your-custom-pattern-here -Method PUT
+```
+  </TabItem>
+</Tabs>
+
+ResponseBody:
+```sh
+{
+    "message": "Unimplemented"
+}
+```
+  </TabItem>
+
+  <TabItem label="DELETE">
+```sh
+einar generate delete-controller delete-customer
+```
+
+Here's an example of how the generated code will look:
+```sh
+func init() {
+	ioc.Registry(deleteCustomer, httpserver.New)
+}
+func deleteCustomer(s httpserver.Server) {
+	fuego.Delete(s.Manager, "/insert-your-custom-pattern-here",
+		func(c *fuego.ContextNoBody) (any, error) {
+
+			return "unimplemented", nil
+		}, option.Summary("deleteCustomer"))
+}
+```
+`s httpserver.Server` is a wrapper for the [official fuego package](https://github.com/go-fuego/fuego). After generating the controller, you must manually replace the placeholder `/insert-your-custom-pattern-here` with the actual path you intend to use in your application. The file `delete_customer.go` will be created in the following directory structure:
+```
+/app
+  /adapter
+    /in
+      /api
+        - delete_customer.go  
+```
+## 🌐 Check The Controller Response
+Execute the following requests to retrieve the default response:
+<Tabs>
+  <TabItem label="CURL">
+```sh
+curl -X DELETE http://localhost:8080/insert-your-custom-pattern-here
+```
+  </TabItem>
+
+  <TabItem label="Windows PowerShell">
+```sh
+Invoke-WebRequest -Uri http://localhost:8080/insert-your-custom-pattern-here -Method DELETE
+```
+  </TabItem>
+</Tabs>
+ResponseBody:
+```sh
+{
+    "message": "Unimplemented"
+}
+```
+  </TabItem>
+
+  <TabItem label="PATCH">
+```sh
+einar generate patch-controller patch-customer
+```
+
+Here's an example of how the generated code will look:
+```sh
+func init() {
+	ioc.Registry(patchCustomer, httpserver.New)
+}
+func patchCustomer(s httpserver.Server) {
+	fuego.Patch(s.Manager, "/insert-your-custom-pattern-here",
+		func(c *fuego.ContextNoBody) (any, error) {
+
+			return "unimplemented", nil
+		}, option.Summary("patchCustomer"))
+}
+```
+`s httpserver.Server` is a wrapper for the [official fuego package](https://github.com/go-fuego/fuego). After generating the controller, you must manually replace the placeholder `/insert-your-custom-pattern-here` with the actual path you intend to use in your application. The file `patch_customer.go` will be created in the following directory structure:
+```
+/app
+  /adapter
+    /in
+      /api
+        - patch_customer.go  
+```
+## 🌐 Check The Controller Response
+Execute the following requests to retrieve the default response:
+<Tabs>
+  <TabItem label="CURL">
+```sh
+curl -X PATCH http://localhost:8080/insert-your-custom-pattern-here
+```
+  </TabItem>
+
+  <TabItem label="Windows PowerShell">
+```sh
+Invoke-WebRequest -Uri http://localhost:8080/insert-your-custom-pattern-here -Method PATCH
+```
+  </TabItem>
+</Tabs>
+ResponseBody:
+```sh
+{
+    "message": "Unimplemented"
+}
+```
+  </TabItem>
+
+</Tabs>
+
+# Bind & Validate Data
+
+By default, Fuego includes [go-playground/validator](https://github.com/go-playground/validator) framework for validation, as shown in the example below.
+
+```sh
+type Customer struct {
+	Name  string `json:"name" validate:"required"`
+	Email string `json:"email" validate:"required,email"`
+}
+
+func init() {
+	ioc.Registry(postCustomer, httpserver.New)
+}
+func postCustomer(s httpserver.Server) {
+	fuego.Post(s.Manager, "/api/customer",
+		func(c *fuego.ContextWithBody[Customer]) (any, error) {
+			_, err := c.Body()
+			if err != nil {
+				return nil, err
+			}
+			return "unimplemented", nil
+		}, option.Summary("postCustomer"))
+}
+```
+CURL
+```sh
+curl --location 'http://localhost:8080/api/customer' \
+--header 'Content-Type: application/json' \
+--data '{
+    "name":"",
+    "email":""
+}'
+```
+ResponseBody
+```sh
+{
+    "title": "Validation Error",
+    "status": 400,
+    "detail": "Name is required, Email is required",
+    "errors": [
+        {
+            "name": "Customer.Name",
+            "reason": "Key: 'Customer.Name' Error:Field validation for 'Name' failed on the 'required' tag",
+            "more": {
+                "field": "Name",
+                "nsField": "Customer.Name",
+                "param": "",
+                "tag": "required",
+                "value": ""
+            }
+        },
+        {
+            "name": "Customer.Email",
+            "reason": "Key: 'Customer.Email' Error:Field validation for 'Email' failed on the 'required' tag",
+            "more": {
+                "field": "Email",
+                "nsField": "Customer.Email",
+                "param": "",
+                "tag": "required",
+                "value": ""
+            }
+        }
+    ]
+}
+```
+</TabItem> 
+<TabItem label="Labstack Echo">
+  
 <Tabs>
 
   <TabItem label="POST">
@@ -153,6 +478,7 @@ Invoke-WebRequest -Uri http://localhost:8080/insert-your-custom-pattern-here -Me
 ```
   </TabItem>
 </Tabs>
+
 ResponseBody:
 ```sh
 {
@@ -262,197 +588,6 @@ ResponseBody:
 </Tabs>
 
 # Bind & Validate Data
-When validating incoming HTTP requests in applications built with Einar, the included options are using tags with the  [go-playground/validator](https://github.com/go-playground/validator) framework or validating requests based on an OpenAPI specification that you define and embed within the application. You can also choose to use another library from the open-source ecosystem, as all code generated by Einar is easily customizable.
-
-# Option 1: Validate OpenAPI Endpoint
-
-1.- Inside your project directory, run the following command to create a new embedded spec:
-```sh
-einar generate openapi customer-spec
-```
-[For more details, learn how to set up Application-Embedded OpenAPI Spec Docs here.](https://ignaciojeria.github.io/openapi/schema-validator/)
-
-2.- Replace the content of the `customer_spec.json` file with your defined OpenAPI specification. We will use the following as an example:
-
-```sh
-{
-  "openapi": "3.0.0",
-  "info": {
-    "title": "Customer API",
-    "version": "1.0.0"
-  },
-  "paths": {
-    "/customer": {
-      "post": {
-        "summary": "Create a new customer",
-        "operationId": "createCustomer",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Customer"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Customer created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Customer"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid input"
-          }
-        }
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "Customer": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "Customer's name"
-          },
-          "email": {
-            "type": "string",
-            "description": "Customer's email",
-            "format": "email"
-          }
-        },
-        "required": [
-          "name",
-          "email"
-        ]
-      }
-    }
-  }
-}
-```
-3.- Replace the default registered endpoints in the `customer_spec.go` file according to your defined OpenAPI specification:
-
-```go
-type CustomerSpec struct {
-	APIReferenceHTML       string
-	CreateCustomerEndpoint *contract.Endpoint
-}
-
-//go:embed customer_spec.json
-var customer_spec []byte
-
-func init() {
-	ioc.Registry(NewCustomerSpec)
-}
-
-func NewCustomerSpec() (CustomerSpec, error) {
-	apiReferenceHTML, err := scalar.ApiReferenceHTML(&scalar.Options{
-		SpecContent: string(customer_spec),
-	})
-	if err != nil {
-		return CustomerSpec{}, err
-	}
-	createCustomerEndpoint, err := contract.LoadSpecEndpoint(
-		contract.EndpointDetails{
-			ContractData: customer_spec,
-			Path:         "/customer",
-			HTTPMethod:   "POST",
-			ContentType:  "application/json",
-		},
-	)
-	if err != nil {
-		return CustomerSpec{}, err
-	}
-	return CustomerSpec{
-		APIReferenceHTML:       apiReferenceHTML,
-		CreateCustomerEndpoint: createCustomerEndpoint}, nil
-}
-```
-
-4.- Inject your specification into your `post_customer.go` controller and validate:
-
-```go
-package api
-
-import (
-	"example-project/app/shared/infrastructure/serverwrapper"
-	"example-project/app/shared/openapi"
-	"io"
-	"net/http"
-
-	ioc "github.com/Ignaciojeria/einar-ioc/v2"
-	"github.com/labstack/echo/v4"
-)
-
-func init() {
-	ioc.Registry(
-		postCustomer,
-		serverwrapper.NewEchoWrapper,
-		openapi.NewCustomerSpec,
-	)
-}
-
-func postCustomer(
-	e serverwrapper.EchoWrapper,
-	spec openapi.CustomerSpec) {
-	e.POST("/customer/create", func(c echo.Context) error {
-		// Read request body as raw bytes
-		requestBytes, err := io.ReadAll(c.Request().Body)
-		if err != nil {
-			return c.JSON(http.StatusBadRequest, map[string]string{
-				"error":   err.Error(),
-				"message": "Error reading request body",
-			})
-		}
-
-		// Validate the incoming request as bytes over OpenAPISpec Endpoint
-		if err := spec.CreateCustomerEndpoint.ValidateBodyBytes(requestBytes); err != nil {
-			return c.JSON(http.StatusBadRequest, map[string]string{
-				"error":   err.Error(),
-				"message": "Error validating request body (raw bytes)",
-			})
-		}
-
-		// OR: Validate after binding the request into a struct (marshaling)
-		type CreateCustomerRequest struct {
-			Name  string `json:"name,omitempty"`
-			Email string `json:"email,omitempty"`
-		}
-
-		var createCustomerRequest CreateCustomerRequest
-
-		// Bind the request body into the struct
-		if err := c.Bind(&createCustomerRequest); err != nil {
-			return c.JSON(http.StatusBadRequest, map[string]string{
-				"error":   err.Error(),
-				"message": "Error binding request body to struct",
-			})
-		}
-
-		// Validate the marshaled request body over OpenAPISpec Endpoint
-		if err := spec.CreateCustomerEndpoint.ValidateBodyInterface(createCustomerRequest); err != nil {
-			return c.JSON(http.StatusBadRequest, map[string]string{
-				"error":   err.Error(),
-				"message": "Error validating request body (marshaled struct)",
-			})
-		}
-
-		return c.JSON(http.StatusOK, map[string]string{
-			"message": "Unimplemented",
-		})
-	})
-}
-```
-
-# Option 2: Validate Data Using Tags
 
 By default, Einar includes inside Echo the [go-playground/validator](https://github.com/go-playground/validator) framework for validation, as shown in the example below.
 
@@ -499,3 +634,5 @@ ResponseBody
     "message": "Key: 'Customer.Name' Error:Field validation for 'Name' failed on the 'required' tag\nKey: 'Customer.Email' Error:Field validation for 'Email' failed on the 'required' tag"
 }
 ```
+  </TabItem>
+</Tabs>

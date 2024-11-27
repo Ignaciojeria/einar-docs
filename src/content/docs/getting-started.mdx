@@ -17,6 +17,7 @@ go install github.com/Ignaciojeria/einar@v1.44.0
 
 ## 👨‍💻 Create a New Project
 To start a new project, create an empty folder, open your terminal inside that folder, and run:
+
 ```sh
 einar init my-first-einar-project
 ```
@@ -36,9 +37,21 @@ func main() {
 
 ## 🔧 Install HTTP Server
 Inside your project directory, run the following command to install the http server:
+
+<Tabs>
+  <TabItem label="Fuego">
+```sh
+einar install fuego
+```
+  </TabItem>
+
+  <TabItem label="Labstack Echo">
 ```sh
 einar install labstack-echo
 ```
+  </TabItem>
+</Tabs>
+
 
 ## 🌐 Check application status
 Inside your project directory, run the following command to start the server:
